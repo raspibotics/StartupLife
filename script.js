@@ -26,7 +26,16 @@ function logEvent(message) {
   const log = document.getElementById("event-log");
   const logEntry = document.createElement("p");
   logEntry.innerText = message;
-  log.appendChild(logEntry);
+  
+    
+    
+    log.appendChild(logEntry);
+    log.scrollTop = log.scrollHeight;
+    
+    log.scrollTop = log.scrollHeight;
+    
+    log.scrollTop = log.scrollHeight;
+    
 }
 
 // Random events logic
@@ -34,7 +43,7 @@ function randomEvent() {
   const events = [
     () => {
       logEvent("💸 A potential investor is interested!");
-      if (confirm("Do you want to pitch your idea to the investor?")) {
+      if (showModal("Do you want to pitch your idea to the investor?")) {
         const fundingGain = Math.floor(Math.random() * 50000) + 10000;
         startup.funding += fundingGain;
         logEvent(`🎉 You secured $${fundingGain.toLocaleString()} in funding!`);
@@ -44,7 +53,7 @@ function randomEvent() {
     },
     () => {
       logEvent("👨‍💻 A talented engineer wants to join your team!");
-      if (confirm("Do you want to hire them? It costs $10,000.")) {
+      if (showModal("Do you want to hire them? It costs $10,000.")) {
         if (startup.funding >= 10000) {
           startup.teamSize++;
           startup.funding -= 10000;
@@ -85,13 +94,211 @@ document.getElementById("next-month").addEventListener("click", () => {
 
   // Check for game end conditions
   if (startup.funding <= 0) {
-    alert("💀 Your startup ran out of funding. Game Over!");
+    
+    
+function showDecision(message, callback) {
+  const popup = document.getElementById("decision-popup");
+  const popupMessage = document.getElementById("popup-message");
+  const yesButton = document.getElementById("popup-yes");
+  const noButton = document.getElementById("popup-no");
+
+  popupMessage.innerText = message;
+  popup.classList.remove("hidden");
+
+  yesButton.onclick = () => {
+    callback(true);
+    popup.classList.add("hidden");
+  };
+
+  noButton.onclick = () => {
+    callback(false);
+    popup.classList.add("hidden");
+  };
+}
+
+
+function showDecision(message, callback) {
+  const popup = document.getElementById("decision-popup");
+  const popupMessage = document.getElementById("popup-message");
+  const yesButton = document.getElementById("popup-yes");
+  const noButton = document.getElementById("popup-no");
+
+  popupMessage.innerText = message;
+  popup.classList.remove("hidden");
+
+  yesButton.onclick = () => {
+    callback(true);
+    popup.classList.add("hidden");
+  };
+
+  noButton.onclick = () => {
+    callback(false);
+    popup.classList.add("hidden");
+  };
+}
+
+function showModal(message, options = { showCancel: false, callback: null }) {
+      const modal = document.getElementById("modal");
+      const modalMessage = document.getElementById("modal-message");
+      const modalOk = document.getElementById("modal-ok");
+      const modalCancel = document.getElementById("modal-cancel");
+      modalMessage.innerText = message;
+      modal.classList.remove("hidden");
+      
+      modalOk.onclick = () => {
+        if (options.callback) options.callback(true);
+        modal.classList.add("hidden");
+      };
+
+      if (options.showCancel) {
+        modalCancel.classList.remove("hidden");
+        modalCancel.onclick = () => {
+          if (options.callback) options.callback(false);
+          modal.classList.add("hidden");
+        };
+      } else {
+        modalCancel.classList.add("hidden");
+      }
+    }
+    ("💀 Your startup ran out of funding. Game Over!");
     document.getElementById("next-month").disabled = true;
   } else if (startup.productProgress >= 100 && startup.months <= 24) {
-    alert("🎉 Your startup launched a successful product and survived! You win!");
+    
+    
+function showDecision(message, callback) {
+  const popup = document.getElementById("decision-popup");
+  const popupMessage = document.getElementById("popup-message");
+  const yesButton = document.getElementById("popup-yes");
+  const noButton = document.getElementById("popup-no");
+
+  popupMessage.innerText = message;
+  popup.classList.remove("hidden");
+
+  yesButton.onclick = () => {
+    callback(true);
+    popup.classList.add("hidden");
+  };
+
+  noButton.onclick = () => {
+    callback(false);
+    popup.classList.add("hidden");
+  };
+}
+
+
+function showDecision(message, callback) {
+  const popup = document.getElementById("decision-popup");
+  const popupMessage = document.getElementById("popup-message");
+  const yesButton = document.getElementById("popup-yes");
+  const noButton = document.getElementById("popup-no");
+
+  popupMessage.innerText = message;
+  popup.classList.remove("hidden");
+
+  yesButton.onclick = () => {
+    callback(true);
+    popup.classList.add("hidden");
+  };
+
+  noButton.onclick = () => {
+    callback(false);
+    popup.classList.add("hidden");
+  };
+}
+
+function showModal(message, options = { showCancel: false, callback: null }) {
+      const modal = document.getElementById("modal");
+      const modalMessage = document.getElementById("modal-message");
+      const modalOk = document.getElementById("modal-ok");
+      const modalCancel = document.getElementById("modal-cancel");
+      modalMessage.innerText = message;
+      modal.classList.remove("hidden");
+      
+      modalOk.onclick = () => {
+        if (options.callback) options.callback(true);
+        modal.classList.add("hidden");
+      };
+
+      if (options.showCancel) {
+        modalCancel.classList.remove("hidden");
+        modalCancel.onclick = () => {
+          if (options.callback) options.callback(false);
+          modal.classList.add("hidden");
+        };
+      } else {
+        modalCancel.classList.add("hidden");
+      }
+    }
+    ("🎉 Your startup launched a successful product and survived! You win!");
     document.getElementById("next-month").disabled = true;
   } else if (startup.months >= 24) {
-    alert("⏳ Your startup survived 2 years! Reflect on your journey.");
+    
+    
+function showDecision(message, callback) {
+  const popup = document.getElementById("decision-popup");
+  const popupMessage = document.getElementById("popup-message");
+  const yesButton = document.getElementById("popup-yes");
+  const noButton = document.getElementById("popup-no");
+
+  popupMessage.innerText = message;
+  popup.classList.remove("hidden");
+
+  yesButton.onclick = () => {
+    callback(true);
+    popup.classList.add("hidden");
+  };
+
+  noButton.onclick = () => {
+    callback(false);
+    popup.classList.add("hidden");
+  };
+}
+
+
+function showDecision(message, callback) {
+  const popup = document.getElementById("decision-popup");
+  const popupMessage = document.getElementById("popup-message");
+  const yesButton = document.getElementById("popup-yes");
+  const noButton = document.getElementById("popup-no");
+
+  popupMessage.innerText = message;
+  popup.classList.remove("hidden");
+
+  yesButton.onclick = () => {
+    callback(true);
+    popup.classList.add("hidden");
+  };
+
+  noButton.onclick = () => {
+    callback(false);
+    popup.classList.add("hidden");
+  };
+}
+
+function showModal(message, options = { showCancel: false, callback: null }) {
+      const modal = document.getElementById("modal");
+      const modalMessage = document.getElementById("modal-message");
+      const modalOk = document.getElementById("modal-ok");
+      const modalCancel = document.getElementById("modal-cancel");
+      modalMessage.innerText = message;
+      modal.classList.remove("hidden");
+      
+      modalOk.onclick = () => {
+        if (options.callback) options.callback(true);
+        modal.classList.add("hidden");
+      };
+
+      if (options.showCancel) {
+        modalCancel.classList.remove("hidden");
+        modalCancel.onclick = () => {
+          if (options.callback) options.callback(false);
+          modal.classList.add("hidden");
+        };
+      } else {
+        modalCancel.classList.add("hidden");
+      }
+    }
+    ("⏳ Your startup survived 2 years! Reflect on your journey.");
     document.getElementById("next-month").disabled = true;
   }
 });
