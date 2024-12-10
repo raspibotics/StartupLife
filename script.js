@@ -12,6 +12,26 @@ class Startup {
 const startup = new Startup(prompt("Enter your startup's name:") || "Tech Startup");
 document.getElementById("stat-name").innerText = startup.name;
 
+function showDecision(message, callback) {
+  const popup = document.getElementById("decision-popup");
+  const popupMessage = document.getElementById("popup-message");
+  const yesButton = document.getElementById("popup-yes");
+  const noButton = document.getElementById("popup-no");
+
+  popupMessage.innerText = message;
+  popup.classList.remove("hidden");
+
+  yesButton.onclick = () => {
+    callback(true);
+    popup.classList.add("hidden");
+  };
+
+  noButton.onclick = () => {
+    callback(false);
+    popup.classList.add("hidden");
+  };
+}
+
 // Update stats on the page
 function updateStats() {
   document.getElementById("stat-age").innerText = startup.months;
@@ -43,7 +63,7 @@ function randomEvent() {
   const events = [
     () => {
       logEvent("💸 A potential investor is interested!");
-      if (showModal("Do you want to pitch your idea to the investor?")) {
+      if (showDecision("Do you want to pitch your idea to the investor?")) {
         const fundingGain = Math.floor(Math.random() * 50000) + 10000;
         startup.funding += fundingGain;
         logEvent(`🎉 You secured $${fundingGain.toLocaleString()} in funding!`);
@@ -53,7 +73,7 @@ function randomEvent() {
     },
     () => {
       logEvent("👨‍💻 A talented engineer wants to join your team!");
-      if (showModal("Do you want to hire them? It costs $10,000.")) {
+      if (showDecision("Do you want to hire them? It costs $10,000.")) {
         if (startup.funding >= 10000) {
           startup.teamSize++;
           startup.funding -= 10000;
@@ -96,25 +116,6 @@ document.getElementById("next-month").addEventListener("click", () => {
   if (startup.funding <= 0) {
     
     
-function showDecision(message, callback) {
-  const popup = document.getElementById("decision-popup");
-  const popupMessage = document.getElementById("popup-message");
-  const yesButton = document.getElementById("popup-yes");
-  const noButton = document.getElementById("popup-no");
-
-  popupMessage.innerText = message;
-  popup.classList.remove("hidden");
-
-  yesButton.onclick = () => {
-    callback(true);
-    popup.classList.add("hidden");
-  };
-
-  noButton.onclick = () => {
-    callback(false);
-    popup.classList.add("hidden");
-  };
-}
 
 
 function showDecision(message, callback) {
@@ -186,25 +187,6 @@ function showDecision(message, callback) {
 }
 
 
-function showDecision(message, callback) {
-  const popup = document.getElementById("decision-popup");
-  const popupMessage = document.getElementById("popup-message");
-  const yesButton = document.getElementById("popup-yes");
-  const noButton = document.getElementById("popup-no");
-
-  popupMessage.innerText = message;
-  popup.classList.remove("hidden");
-
-  yesButton.onclick = () => {
-    callback(true);
-    popup.classList.add("hidden");
-  };
-
-  noButton.onclick = () => {
-    callback(false);
-    popup.classList.add("hidden");
-  };
-}
 
 function showModal(message, options = { showCancel: false, callback: null }) {
       const modal = document.getElementById("modal");
@@ -233,47 +215,8 @@ function showModal(message, options = { showCancel: false, callback: null }) {
     document.getElementById("next-month").disabled = true;
   } else if (startup.months >= 24) {
     
-    
-function showDecision(message, callback) {
-  const popup = document.getElementById("decision-popup");
-  const popupMessage = document.getElementById("popup-message");
-  const yesButton = document.getElementById("popup-yes");
-  const noButton = document.getElementById("popup-no");
-
-  popupMessage.innerText = message;
-  popup.classList.remove("hidden");
-
-  yesButton.onclick = () => {
-    callback(true);
-    popup.classList.add("hidden");
-  };
-
-  noButton.onclick = () => {
-    callback(false);
-    popup.classList.add("hidden");
-  };
-}
 
 
-function showDecision(message, callback) {
-  const popup = document.getElementById("decision-popup");
-  const popupMessage = document.getElementById("popup-message");
-  const yesButton = document.getElementById("popup-yes");
-  const noButton = document.getElementById("popup-no");
-
-  popupMessage.innerText = message;
-  popup.classList.remove("hidden");
-
-  yesButton.onclick = () => {
-    callback(true);
-    popup.classList.add("hidden");
-  };
-
-  noButton.onclick = () => {
-    callback(false);
-    popup.classList.add("hidden");
-  };
-}
 
 function showModal(message, options = { showCancel: false, callback: null }) {
       const modal = document.getElementById("modal");
