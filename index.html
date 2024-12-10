@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startup Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <header>
+      <h1>Startup Simulator</h1>
+      <p id="welcome-message">Can your startup survive the first 2 years?</p>
+    </header>
+    
+    <main>
+      <div class="stats">
+        <h2>Startup Stats</h2>
+        <p><strong>Startup Name:</strong> <span id="stat-name"></span></p>
+        <p><strong>Months in Operation:</strong> <span id="stat-age">0</span></p>
+        <p><strong>Funding:</strong> <span id="stat-funding">$100,000</span></p>
+        <p><strong>Reputation:</strong> <span id="stat-reputation">50</span></p>
+        <p><strong>Team Size:</strong> <span id="stat-team">2</span></p>
+        <p><strong>Product Progress:</strong> <span id="stat-product">0%</span></p>
+      </div>
+
+      <div class="actions">
+        <h2>Actions</h2>
+        <button id="next-month">Next Month</button>
+        <div id="event-log"></div>
+      </div>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
