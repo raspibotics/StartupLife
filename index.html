@@ -9,19 +9,56 @@
 <body>
   <div class="game-container">
     <header>
-      <h1>Startup Simulator</h1>
+      <img src="logo.png" alt="StartupLife Logo" class="logo" />
       <p id="welcome-message">Can your startup survive the first 2 years?</p>
     </header>
     
     <main>
+      <audio id="button-click-sound" src="sounds/button-click.mp3"></audio>
+      <audio id="decision-confirm-sound" src="sounds/decision-confirm.mp3"></audio>
+      <audio id="decision-cancel-sound" src="sounds/decision-cancel.mp3"></audio>
+      <audio id="event-positive-sound" src="sounds/event-positive.mp3"></audio>
+      <audio id="event-negative-sound" src="sounds/event-negative.mp3"></audio>
+
+      <!-- Updated Stats Section with Progress Bars -->
       <div class="stats">
         <h2>Startup Stats</h2>
         <p><strong>Startup Name:</strong> <span id="stat-name"></span></p>
-        <p><strong>Months in Operation:</strong> <span id="stat-age">0</span></p>
-        <p><strong>Funding:</strong> <span id="stat-funding">$100,000</span></p>
-        <p><strong>Reputation:</strong> <span id="stat-reputation">50</span></p>
-        <p><strong>Team Size:</strong> <span id="stat-team">2</span></p>
-        <p><strong>Product Progress:</strong> <span id="stat-product">0%</span></p>
+
+        <div class="stat-item">
+          <label>Age (Months):</label>
+          <div class="progress-bar">
+            <div id="stat-age-bar" class="progress-bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <label>Funding:</label>
+          <div class="progress-bar">
+            <div id="stat-funding-bar" class="progress-bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <label>Reputation:</label>
+          <div class="progress-bar">
+            <div id="stat-reputation-bar" class="progress-bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <label>Team Size:</label>
+          <div class="progress-bar">
+            <div id="stat-team-bar" class="progress-bar-inner"></div>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <label>Product Progress:</label>
+          <div class="progress-bar">
+            <div id="stat-product-bar" class="progress-bar-inner"></div>
+          </div>
+        </div>
       </div>
 
       <div class="actions">

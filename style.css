@@ -1,424 +1,233 @@
 /* General styling for the Startup Simulator */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f5f5f5;
-  color: #333;
-}
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F5F5F5; /* Light background */
+    color: #333;
+  }
+  
+  .game-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  header {
+    background-color: #2D70F4; /* Blue tone matching logo */
+    color: white;
+    padding: 20px;
+    text-align: 
+    center;
+  }
 
-.game-container {
-  max-width: 600px;
-  margin: 50px auto;
-  background: white;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
-}
+    header img {
+    max-width: 200px; /* Adjust this to the desired size */
+    height: auto;
+    margin: 0 auto;
+    }
+  
+  header h1 {
+    margin: 0;
+    font-size: 32px;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  .stats {
+    background: #F2F7FF; /* Soft light blue background */
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .stats h2 {
+    margin-bottom: 10px;
+    color: #2D70F4; /* Blue title color */
+  }
+  
+  .stats p {
+    margin: 5px 0;
+  }
+  
+  .actions {
+    text-align: center;
+  }
+  
+  .actions h2 {
+    margin-bottom: 10px;
+    color: #2D70F4; /* Blue title color */
+  }
+  
+  button {
+    background: #2D70F4; /* Main blue color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button:hover {
+    background: #1F56C2; /* Darker blue on hover */
+  }
+  
+  #event-log {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Modal styling */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal.hidden {
+    display: none;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .modal-buttons button {
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #modal-ok {
+    background-color: #2D70F4; /* Blue button */
+    color: white;
+  }
+  
+  #modal-cancel {
+    background-color: #DC3545; /* Red cancel button */
+    color: white;
+  }
+  
+  /* Event log auto-scroll */
+  #event-log {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  /* Popup styling */
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup.hidden {
+    display: none;
+  }
+  
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 80%;
+  }
+  
+  .popup-buttons button {
+    margin: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #popup-yes {
+    background-color: #2D70F4; /* Blue button */
+    color: white;
+  }
+  
+  #popup-no {
+    background-color: #DC3545; /* Red cancel button */
+    color: white;
+  }
+  
+  /* Ensure modal and popup are visible above all elements */
+  .modal, .popup {
+    z-index: 9999;
+  }
+  
+  /* Button hover effects for better UX */
+  #modal-ok:hover, #popup-yes:hover {
+    background-color: #1F56C2; /* Darker blue hover */
+  }
+  
+  #modal-cancel:hover, #popup-no:hover {
+    background-color: #C82333; /* Darker red hover */
+  }
 
-header {
-  background-color: #28a745;
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-
-header h1 {
-  margin: 0;
-}
-
-main {
-  padding: 20px;
-}
-
-.stats {
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.stats h2 {
-  margin-bottom: 10px;
-}
-
-.stats p {
-  margin: 5px 0;
-}
-
-.actions {
-  text-align: center;
-}
-
-.actions h2 {
-  margin-bottom: 10px;
-}
-
-button {
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-#event-log {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #555;
-}
-
-/* Modal styling */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.modal-buttons button {
-  margin: 10px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-#modal-ok {
-  background-color: #28a745;
-  color: white;
-}
-
-#modal-cancel {
-  background-color: #dc3545;
-  color: white;
-}
-
-/* Updated button styles */
-button {
-  background: linear-gradient(to right, #007BFF, #0056b3);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background: linear-gradient(to right, #0056b3, #007BFF);
-}
-
-/* Event log auto-scroll */
-#event-log {
-  max-height: 150px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* Modal styling */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.modal-buttons button {
-  margin: 10px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-#modal-ok {
-  background-color: #28a745;
-  color: white;
-}
-
-#modal-cancel {
-  background-color: #dc3545;
-  color: white;
-}
-
-/* Updated button styles */
-button {
-  background: linear-gradient(to right, #007BFF, #0056b3);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background: linear-gradient(to right, #0056b3, #007BFF);
-}
-
-/* Event log auto-scroll */
-#event-log {
-  max-height: 150px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* Popup styling */
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.popup.hidden {
-  display: none;
-}
-
-.popup-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  max-width: 400px;
-  width: 80%;
-}
-
-.popup-buttons button {
-  margin: 10px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-#popup-yes {
-  background-color: #28a745;
-  color: white;
-}
-
-#popup-no {
-  background-color: #dc3545;
-  color: white;
-}
-
-/* Ensure modal and popup are visible above all elements */
-.modal, .popup {
-  z-index: 9999;
-}
-
-/* Default button styles for visibility */
-.popup-buttons button, .modal-buttons button {
-  display: inline-block;
-  font-size: 16px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-}
-
-/* Button hover effects for better UX */
-#modal-ok:hover, #popup-yes:hover {
-  background-color: #218838;
-}
-
-#modal-cancel:hover, #popup-no:hover {
-  background-color: #c82333;
-}
-
-/* Modal styling */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.modal-buttons button {
-  margin: 10px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-#modal-ok {
-  background-color: #28a745;
-  color: white;
-}
-
-#modal-cancel {
-  background-color: #dc3545;
-  color: white;
-}
-
-/* Updated button styles */
-button {
-  background: linear-gradient(to right, #007BFF, #0056b3);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background: linear-gradient(to right, #0056b3, #007BFF);
-}
-
-/* Event log auto-scroll */
-#event-log {
-  max-height: 150px;
-  overflow-y: auto;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-/* Popup styling */
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.popup.hidden {
-  display: none;
-}
-
-.popup-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  max-width: 400px;
-  width: 80%;
-}
-
-.popup-buttons button {
-  margin: 10px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-#popup-yes {
-  background-color: #28a745;
-  color: white;
-}
-
-#popup-no {
-  background-color: #dc3545;
-  color: white;
-}
-
-/* Ensure modal and popup are visible above all elements */
-.modal, .popup {
-  z-index: 9999;
-}
-
-/* Default button styles for visibility */
-.popup-buttons button, .modal-buttons button {
-  display: inline-block;
-  font-size: 16px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-}
-
-/* Button hover effects for better UX */
-#modal-ok:hover, #popup-yes:hover {
-  background-color: #218838;
-}
-
-#modal-cancel:hover, #popup-no:hover {
-  background-color: #c82333;
-}
+  .progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 5px;
+  }
+  
+  .progress-bar-inner {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease;
+  }
+  
+  #stat-age-bar {
+    background-color: #FFA500; /* Orange for Age */
+  }
+  
+  #stat-funding-bar {
+    background-color: #4CAF50; /* Green for Funding */
+  }
+  
+  #stat-reputation-bar {
+    background-color: #2196F3; /* Blue for Reputation */
+  }
+  
+  #stat-team-bar {
+    background-color: #FF9800; /* Orange for Team */
+  }
+  
+  #stat-product-bar {
+    background-color: #9C27B0; /* Purple for Product Progress */
+  }
+  

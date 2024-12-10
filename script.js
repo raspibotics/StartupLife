@@ -9,6 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalOk = document.getElementById("modal-ok");
   const modalCancel = document.getElementById("modal-cancel");
 
+  // Sound elements
+  const buttonClickSound = document.getElementById("button-click-sound");
+  const decisionConfirmSound = document.getElementById("decision-confirm-sound");
+  const decisionCancelSound = document.getElementById("decision-cancel-sound");
+  const eventPositiveSound = document.getElementById("event-positive-sound");
+  const eventNegativeSound = document.getElementById("event-negative-sound");
+
   // Ensure critical elements are available
   if (!popup || !popupMessage || !yesButton || !noButton || !nextMonthButton || !modal || !modalMessage || !modalOk) {
     console.error("One or more critical elements are missing from the DOM.");
@@ -23,11 +30,13 @@ document.addEventListener("DOMContentLoaded", () => {
     yesButton.onclick = () => {
       callback(true);
       popup.classList.add("hidden");
+      decisionConfirmSound.play(); // Play confirm sound
     };
 
     noButton.onclick = () => {
       callback(false);
       popup.classList.add("hidden");
+      decisionCancelSound.play(); // Play cancel sound
     };
   }
 
@@ -39,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modalOk.onclick = () => {
       if (options.callback) options.callback(true);
       modal.classList.add("hidden");
+      buttonClickSound.play(); // Play button click sound
     };
 
     if (options.showCancel) {
@@ -46,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
       modalCancel.onclick = () => {
         if (options.callback) options.callback(false);
         modal.classList.add("hidden");
+        buttonClickSound.play(); // Play button click sound
       };
     } else {
       modalCancel.classList.add("hidden");
@@ -71,11 +82,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Update stats on the page
   function updateStats() {
-    document.getElementById("stat-age").innerText = startup.months;
-    document.getElementById("stat-funding").innerText = `$${startup.funding.toLocaleString()}`;
-    document.getElementById("stat-reputation").innerText = startup.reputation;
-    document.getElementById("stat-team").innerText = startup.teamSize;
-    document.getElementById("stat-product").innerText = `${startup.productProgress}%`;
+    // Update progress bars based on 0-100 scale
+    document.getElementById("stat-age-bar").style.width = `${(startup.months / 24) * 100}%`;
+    document.getElementById("stat-funding-bar").style.width = `${(startup.funding / 100000) * 100}%`;
+    document.getElementById("stat-reputation-bar").style.width = `${startup.reputation}%`;
+    document.getElementById("stat-team-bar").style.width = `${(startup.teamSize / 10) * 100}%`;  // Assume max team size is 10
+    document.getElementById("stat-product-bar").style.width = `${startup.productProgress}%`;
+
+    // Color coding for progress bars
+    document.getElementById("stat-age-bar").style.backgroundColor = "#4CAF50"; // Green
+    document.getElementById("stat-funding-bar").style.backgroundColor = "#2D70F4"; // Blue
+    document.getElementById("stat-reputation-bar").style.backgroundColor = "#FFEB3B"; // Yellow
+    document.getElementById("stat-team-bar").style.backgroundColor = "#FFC107"; // Amber
+    document.getElementById("stat-product-bar").style.backgroundColor = "#FF5722"; // Red
   }
 
   // Log events on the page
@@ -97,8 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const fundingGain = Math.floor(Math.random() * 50000) + 10000;
             startup.funding += fundingGain;
             logEvent(`🎉 You secured $${fundingGain.toLocaleString()} in funding!`);
+            eventPositiveSound.play(); // Play positive event sound
           } else {
             logEvent("🚶 You skipped the opportunity.");
+            eventNegativeSound.play(); // Play negative event sound
           }
           updateStats();
         });
@@ -111,8 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
               startup.teamSize++;
               startup.funding -= 10000;
               logEvent("🎉 You hired a new team member! Team size increased.");
+              eventPositiveSound.play(); // Play positive event sound
             } else {
               logEvent("💔 Not enough funding to hire them.");
+              eventNegativeSound.play(); // Play negative event sound
             }
           }
           updateStats();
@@ -123,17 +146,20 @@ document.addEventListener("DOMContentLoaded", () => {
         startup.productProgress += productBoost;
         startup.productProgress = Math.min(startup.productProgress, 100); // Cap at 100%
         logEvent(`🚀 Your team made great progress! Product progress increased by ${productBoost}%.`);
+        eventPositiveSound.play(); // Play positive event sound
       },
       () => {
         const randomExpense = Math.floor(Math.random() * 20000) + 5000;
         startup.funding -= randomExpense;
         logEvent(`💰 Unexpected expenses! You lost $${randomExpense.toLocaleString()}.`);
+        eventNegativeSound.play(); // Play negative event sound
       },
       () => {
         const reputationChange = Math.floor(Math.random() * 20) - 10;
         startup.reputation += reputationChange;
         startup.reputation = Math.max(0, Math.min(100, startup.reputation)); // Clamp between 0 and 100
         logEvent(`📣 Public perception changed! Reputation changed by ${reputationChange}.`);
+        eventPositiveSound.play(); // Play positive event sound
       },
     ];
     const randomIndex = Math.floor(Math.random() * events.length);
@@ -151,12 +177,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (startup.funding <= 0) {
       showModal("💀 Your startup ran out of funding. Game Over!");
       nextMonthButton.disabled = true;
+      decisionCancelSound.play(); // Play cancel sound
     } else if (startup.productProgress >= 100 && startup.months <= 24) {
       showModal("🎉 Your startup launched a successful product and survived! You win!");
       nextMonthButton.disabled = true;
+      decisionConfirmSound.play(); // Play confirm sound
     } else if (startup.months >= 24) {
       showModal("⏳ Your startup survived 2 years! Reflect on your journey.");
       nextMonthButton.disabled = true;
+      decisionConfirmSound.play(); // Play confirm sound
     }
   });
 
