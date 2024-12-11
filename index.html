@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Startup Simulator</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -20,7 +20,6 @@
       <audio id="event-positive-sound" src="sounds/event-positive.mp3"></audio>
       <audio id="event-negative-sound" src="sounds/event-negative.mp3"></audio>
 
-      <!-- Updated Stats Section with Progress Bars -->
       <div class="stats">
         <h2>Startup Stats</h2>
         <p><strong>Startup Name:</strong> <span id="stat-name"></span></p>
@@ -57,6 +56,14 @@
           <label>Product Progress:</label>
           <div class="progress-bar">
             <div id="stat-product-bar" class="progress-bar-inner"></div>
+          </div>
+        </div>
+
+        <!-- New progress bar for sustainability -->
+        <div class="stat-item">
+          <label>Sustainability:</label>
+          <div class="progress-bar">
+            <div id="stat-sustainability-bar" class="progress-bar-inner"></div>
           </div>
         </div>
       </div>
