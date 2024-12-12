@@ -8,31 +8,22 @@
 </head>
 <body>
   <div class="game-container">
-    <!-- Start Screen -->
-    <div class="start-screen" id="start-screen">
-      <div class="start-content">
-        <h1>Dear CEO,</h1>
-        <p>Welcome to the EV startup simulator. Name your flagship EV:</p>
-        <input type="text" id="car-name-input" placeholder="e.g. Aurora One"><br><br>
-        <button id="start-button">Start</button>
-      </div>
-    </div>
-
     <header>
-      <img src="logo.png" alt="StartupLife Logo" class="logo" />
       <p id="welcome-message">Can your startup survive 2 years (104 weeks)?</p>
+      <div class="sound-controls">
+        <div class="volume-control">
+          <label for="bgm-volume">BGM:</label>
+          <input type="range" id="bgm-volume" min="0" max="1" step="0.01" value="0.5">
+        </div>
+        <div class="volume-control">
+          <label for="sfx-volume">SFX:</label>
+          <input type="range" id="sfx-volume" min="0" max="1" step="0.01" value="0.5">
+        </div>
+      </div>
     </header>
-    
-    <main>
-      <!-- Audio -->
-      <audio id="button-click-sound" src="sounds/button-click.mp3"></audio>
-      <audio id="decision-confirm-sound" src="sounds/decision-confirm.mp3"></audio>
-      <audio id="decision-cancel-sound" src="sounds/decision-cancel.mp3"></audio>
-      <audio id="event-positive-sound" src="sounds/event-positive.mp3"></audio>
-      <audio id="event-negative-sound" src="sounds/event-negative.mp3"></audio>
-      <audio id="background-music" src="sounds/background-music.mp3" loop></audio>
 
-      <div class="stats">
+    <div class="content">
+      <aside class="stats-panel">
         <h2>Startup Stats</h2>
         <p><strong>Startup Name:</strong> <span id="stat-name"></span></p>
 
@@ -70,17 +61,43 @@
             <div id="stat-environmental-bar" class="progress-bar-inner"></div>
           </div>
         </div>
-      </div>
+      </aside>
 
-      <div class="actions">
-        <h2>Actions</h2>
-        <button id="next-week">Next Week</button>
-        <div id="event-log"></div>
-      </div>
-    </main>
+      <main class="main-area">
+        <audio id="button-click-sound" src="sounds/button-click.mp3"></audio>
+        <audio id="decision-confirm-sound" src="sounds/decision-confirm.mp3"></audio>
+        <audio id="decision-cancel-sound" src="sounds/decision-cancel.mp3"></audio>
+        <audio id="event-positive-sound" src="sounds/event-positive.mp3"></audio>
+        <audio id="event-negative-sound" src="sounds/event-negative.mp3"></audio>
+        <audio id="background-music" src="sounds/background-music.mp3" loop></audio>
+
+        <div class="animation-container">
+          <h2 id="central-company-name"></h2>
+          <img src="images/production-line.webp" alt="Cartoon EV assembly line" class="production-animation">
+        </div>
+      </main>
+
+      <aside class="feed-panel">
+        <h2>News Feed</h2>
+        <div id="event-log" class="event-log"></div>
+      </aside>
+    </div>
+
+    <div class="action-button-container">
+      <button id="next-week" class="action-button">+</button>
+      <div class="action-button-label">Next Week</div>
+    </div>
   </div>
 
-  <!-- Modal for Notifications -->
+  <div class="start-screen" id="start-screen">
+    <div class="start-content">
+      <h1>Dear CEO,</h1>
+      <p>Welcome to the EV startup simulator. Name your flagship EV:</p>
+      <input type="text" id="car-name-input" placeholder="e.g. Aurora One"><br><br>
+      <button id="start-button">Start</button>
+    </div>
+  </div>
+
   <div id="modal" class="modal hidden">
     <div class="modal-content">
       <p id="modal-message"></p>
@@ -91,7 +108,6 @@
     </div>
   </div>
   
-  <!-- Popup for Scenarios with multiple choices -->
   <div id="decision-popup" class="popup hidden">
     <div class="popup-content">
       <h3 id="popup-title"></h3>
@@ -100,7 +116,6 @@
     </div>
   </div>
 
-  <!-- Mini-Game 1 Popup: Quality Control -->
   <div id="minigame-popup" class="popup hidden">
     <div class="popup-content">
       <h3>Quality Control Check!</h3>
@@ -109,7 +124,6 @@
     </div>
   </div>
 
-  <!-- Mini-Game 2 Popup: Investment Round -->
   <div id="investment-popup" class="popup hidden">
     <div class="popup-content">
       <h3>Investment Round!</h3>
@@ -118,7 +132,6 @@
     </div>
   </div>
 
-  <!-- Mini-Game 3 Popup: Environmental Task -->
   <div id="envminigame-popup" class="popup hidden">
     <div class="popup-content">
       <h3>Environmental Task!</h3>

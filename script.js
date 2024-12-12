@@ -32,6 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const eventNegativeSound = document.getElementById("event-negative-sound");
   const backgroundMusic = document.getElementById("background-music");
 
+  // Constants for max values
+  const MAX_WEEK = 104;
+  const MAX_CASH = 100000;
+  const MAX_REP = 100;
+  const MAX_ENV = 100;
+  const MAX_WORKERS = 10;
+
   function showModal(message, options = { showCancel: false, callback: null }) {
     modalMessage.innerText = message;
     modal.classList.remove("hidden");
@@ -84,19 +91,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let startup;
 
-  function adjustStat(statName, amount, min = 0, max = 100000) {
-    startup[statName] = Math.max(min, Math.min(max, startup[statName] + amount));
+  function adjustStat(statName, amount) {
+    // Clamp values based on stat
+    let minVal = 0;
+    let maxVal;
+    switch (statName) {
+      case 'week': maxVal = MAX_WEEK; break;
+      case 'cash': maxVal = MAX_CASH; break;
+      case 'reputation': maxVal = MAX_REP; break;
+      case 'environmental': maxVal = MAX_ENV; break;
+      case 'workers': maxVal = MAX_WORKERS; break;
+      default: maxVal = 100000; // fallback if needed
+    }
+
+    startup[statName] = Math.max(minVal, Math.min(maxVal, startup[statName] + amount));
   }
 
   function updateStats() {
-    // 2 years = 104 weeks
-    document.getElementById("stat-week-bar").style.width = `${(startup.week / 104) * 100}%`;
-    document.getElementById("stat-cash-bar").style.width = `${(startup.cash / 100000) * 100}%`;
-    document.getElementById("stat-reputation-bar").style.width = `${startup.reputation}%`;
-    document.getElementById("stat-workers-bar").style.width = `${(startup.workers / 10) * 100}%`;
-    document.getElementById("stat-environmental-bar").style.width = `${startup.environmental}%`;
+    // Update bars with clamped values
+    document.getElementById("stat-week-bar").style.width = `${(startup.week / MAX_WEEK) * 100}%`;
+    document.getElementById("stat-cash-bar").style.width = `${(startup.cash / MAX_CASH) * 100}%`;
+    document.getElementById("stat-reputation-bar").style.width = `${(startup.reputation)}%`;
+    document.getElementById("stat-workers-bar").style.width = `${(startup.workers / MAX_WORKERS) * 100}%`;
+    document.getElementById("stat-environmental-bar").style.width = `${(startup.environmental)}%`;
 
-    // Color coding remains the same
     document.getElementById("stat-week-bar").style.backgroundColor = "#4CAF50";       
     document.getElementById("stat-cash-bar").style.backgroundColor = "#2D70F4"; 
     document.getElementById("stat-reputation-bar").style.backgroundColor = "#FFEB3B";
@@ -114,7 +132,42 @@ document.addEventListener("DOMContentLoaded", () => {
     log.scrollTop = log.scrollHeight;
   }
 
-  // Updated scenarios (ensure all increments and stat updates are consistent with week, cash, etc.)
+  // Check end conditions
+  function checkEndConditions() {
+    if (startup.cash <= 0) {
+      endGame("Your startup ran out of cash.");
+      return true;
+    }
+    if (startup.reputation <= 0) {
+      endGame("Your startup lost all public trust.");
+      return true;
+    }
+    if (startup.environmental <= 0) {
+      endGame("Your startup's environmental record collapsed.");
+      return true;
+    }
+    if (startup.workers <= 0) {
+      endGame("You have no workers left to continue operations.");
+      return true;
+    }
+    return false;
+  }
+
+  function endGame(reason) {
+    // Calculate final score
+    // Example formula:
+    // score = reputation + environmental + (cash/1000) + (workers * 10) + (week/2)
+    let score = Math.floor(startup.reputation 
+                   + startup.environmental
+                   + (startup.cash / 1000)
+                   + (startup.workers * 10)
+                   + (startup.week / 2));
+
+    showModal(`Game Over! ${reason}\nFinal Score: ${score}`);
+    nextWeekButton.disabled = true;
+    decisionCancelSound.play();
+  }
+
   const scenarios = [
     // 1. Push vs Pull Manufacturing (1st occurrence)
     {
@@ -126,9 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', 5);
             adjustStat('environmental', 5);
-            adjustStat('cash', 10000); // +$10,000
+            adjustStat('cash', 10000); // +£10,000
             adjustStat('week', 1);
-            logEvent("You opt for Pull: Tailored production, no waste. +Rep, +Env, +$10k");
+            logEvent("You opt for Pull: Tailored production, no waste. +Rep, +Env, +£10k");
             eventPositiveSound.play();
             updateStats();
           }
@@ -138,9 +191,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -5);
             adjustStat('environmental', -5);
-            adjustStat('cash', -10000); // -$10,000
+            adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("You choose Push: Overproduction, storage costs. -Rep, -Env, -$10k");
+            logEvent("You choose Push: Overproduction, storage costs. -Rep, -Env, -£10k");
             eventNegativeSound.play();
             updateStats();
           }
@@ -158,9 +211,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', 5);
             adjustStat('environmental', 5);
-            adjustStat('cash', 10000); // +$10,000
+            adjustStat('cash', 10000); // +£10,000
             adjustStat('week', 1);
-            logEvent("Again, Pull pays off: +Rep, +Env, +$10k");
+            logEvent("Again, Pull pays off: +Rep, +Env, +£10k");
             eventPositiveSound.play();
             updateStats();
           }
@@ -170,9 +223,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -5);
             adjustStat('environmental', -5);
-            adjustStat('cash', -10000); // -$10,000
+            adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("Push again: costs rise, no R&D funds. -Rep, -Env, -$10k");
+            logEvent("Push again: costs rise, no R&D funds. -Rep, -Env, -£10k");
             eventNegativeSound.play();
             updateStats();
           }
@@ -190,9 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', 5);
             adjustStat('environmental', 5);
-            adjustStat('cash', 10000); // +$10,000
+            adjustStat('cash', 10000); // +£10,000
             adjustStat('week', 1);
-            logEvent("Pull again: less waste, more profit. +Rep, +Env, +$10k");
+            logEvent("Pull again: less waste, more profit. +Rep, +Env, +£10k");
             eventPositiveSound.play();
             updateStats();
           }
@@ -202,9 +255,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -5);
             adjustStat('environmental', -5);
-            adjustStat('cash', -10000); // -$10,000
+            adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("Push: Excess stock. -Rep, -Env, -$10k");
+            logEvent("Push: Excess stock. -Rep, -Env, -£10k");
             eventNegativeSound.play();
             updateStats();
           }
@@ -215,14 +268,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // 4. R&D Investment Opportunity
     {
       title: "R&D Investment",
-      description: "Invest $10,000 in R&D? Do this 3 times total for a breakthrough.",
+      description: "Invest £10,000 in R&D? Do this 3 times total for a breakthrough.",
       choices: [
         {
           text: "Yes",
           onSelect: () => {
-            adjustStat('cash', -10000); // -$10,000
+            adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("You invest in R&D: -$10k now for future gains.");
+            logEvent("You invest in R&D: -£10k now for future gains.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -248,9 +301,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Reliable Supplier",
           onSelect: () => {
             adjustStat('reputation', 3);
-            adjustStat('cash', -5000); // -$5,000
+            adjustStat('cash', -5000); // -£5,000
             adjustStat('week', 1);
-            logEvent("Reliable supplier: stable deliveries, -$5k, +Rep");
+            logEvent("Reliable supplier: stable deliveries, -£5k, +Rep");
             eventPositiveSound.play();
             updateStats();
           }
@@ -259,9 +312,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Unreliable Supplier",
           onSelect: () => {
             adjustStat('reputation', -5);
-            adjustStat('cash', 5000); // +$5,000
+            adjustStat('cash', 5000); // +£5,000
             adjustStat('week', 1);
-            logEvent("Unreliable supplier: cheaper now (+$5k), future risk.");
+            logEvent("Unreliable supplier: cheaper now (+£5k), future risk.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -279,9 +332,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', 5);
             adjustStat('environmental', 10);
-            adjustStat('cash', -10000); // -$10,000
+            adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("Recycle: +Rep, +Env, -$10k for compliance.");
+            logEvent("Recycle: +Rep, +Env, -£10k for compliance.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -291,9 +344,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -10);
             adjustStat('environmental', -10);
-            adjustStat('cash', -20000); // -$20,000
+            adjustStat('cash', -20000); // -£20,000
             adjustStat('week', 1);
-            logEvent("Fly-tip: Heavy fines, -Rep, -Env, -$20k.");
+            logEvent("Fly-tip: Heavy fines, -Rep, -Env, -£20k.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -311,9 +364,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', 10);
             adjustStat('environmental', 10);
-            adjustStat('cash', 5000); // +$5,000 (gov investment)
+            adjustStat('cash', 5000); // +£5,000 (gov investment)
             adjustStat('week', 1);
-            logEvent("Sustainable choice: +Rep, +Env, +$5k investment.");
+            logEvent("Sustainable choice: +Rep, +Env, +£5k investment.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -323,9 +376,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -5);
             adjustStat('environmental', -5);
-            adjustStat('cash', -10000); // -$10,000 fee
+            adjustStat('cash', -10000); // -£10,000 fee
             adjustStat('week', 1);
-            logEvent("Cheap panels: -Rep, -Env, -$10k due to penalties.");
+            logEvent("Cheap panels: -Rep, -Env, -£10k due to penalties.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -342,9 +395,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Track Inventory",
           onSelect: () => {
             adjustStat('reputation', 5);
-            adjustStat('cash', -5000); // -$5,000 cost
+            adjustStat('cash', -5000); // -£5,000 cost
             adjustStat('week', 1);
-            logEvent("Inventory tracking: better delivery, +Rep, -$5k.");
+            logEvent("Inventory tracking: better delivery, +Rep, -£5k.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -353,9 +406,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "No System",
           onSelect: () => {
             adjustStat('reputation', -5);
-            adjustStat('cash', -10000); // -$10,000 due to stockouts and fixes
+            adjustStat('cash', -10000); // -£10,000 due to stockouts and fixes
             adjustStat('week', 1);
-            logEvent("No tracking: stockouts cost you -$10k and -Rep.");
+            logEvent("No tracking: stockouts cost you -£10k and -Rep.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -372,9 +425,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Yes",
           onSelect: () => {
             adjustStat('reputation', 5);
-            adjustStat('cash', -5000); // -$5,000 to invest in relationship
+            adjustStat('cash', -5000); // -£5,000 to invest in relationship
             adjustStat('week', 1);
-            logEvent("Supplier ties: +Rep, -$5k for stable supply.");
+            logEvent("Supplier ties: +Rep, -£5k for stable supply.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -383,9 +436,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "No",
           onSelect: () => {
             adjustStat('reputation', -5);
-            adjustStat('cash', -5000); // -$5,000 due to inefficiencies
+            adjustStat('cash', -5000); // -£5,000 due to inefficiencies
             adjustStat('week', 1);
-            logEvent("Ignoring suppliers: delays cost -Rep, -$5k.");
+            logEvent("Ignoring suppliers: delays cost -Rep, -£5k.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -401,9 +454,9 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           text: "Buy at High Cost",
           onSelect: () => {
-            adjustStat('cash', -15000); // -$15,000
+            adjustStat('cash', -15000); // -£15,000
             adjustStat('week', 1);
-            logEvent("You secure materials at high cost: -$15k.");
+            logEvent("You secure materials at high cost: -£15k.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -412,9 +465,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Wait It Out",
           onSelect: () => {
             adjustStat('reputation', -5);
-            adjustStat('cash', -5000); // -$5,000 lost sales
+            adjustStat('cash', -5000); // -£5,000 lost sales
             adjustStat('week', 1);
-            logEvent("You wait: lost sales, -Rep, -$5k.");
+            logEvent("You wait: lost sales, -Rep, -£5k.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -428,19 +481,19 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "A competitor claims you infringed their EV design. How to respond?",
       choices: [
         {
-          text: "Settle Privately ($20k)",
+          text: "Settle Privately (£20k)",
           onSelect: () => {
             adjustStat('cash', -20000);
             adjustStat('week', 1);
-            logEvent("Settled: -$20k, rep stable.");
+            logEvent("Settled: -£20k, rep stable.");
             eventNegativeSound.play();
             updateStats();
           }
         },
         {
-          text: "Defend in Court ($15k)",
+          text: "Defend in Court (£15k)",
           onSelect: () => {
-            logEvent("Defend in court: -$15k, outcome uncertain.");
+            logEvent("Defend in court: -£15k, outcome uncertain.");
             adjustStat('cash', -15000);
             adjustStat('week', 1);
             eventNegativeSound.play();
@@ -448,11 +501,11 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         },
         {
-          text: "License Design ($10k)",
+          text: "License Design (£10k)",
           onSelect: () => {
             adjustStat('cash', -10000);
             adjustStat('week', 1);
-            logEvent("License the design: -$10k now, stable rep, future royalties.");
+            logEvent("License the design: -£10k now, stable rep, future royalties.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -475,32 +528,32 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "Your proprietary algorithm was leaked. How do you respond?",
       choices: [
         {
-          text: "Enhance Cybersecurity ($10k)",
+          text: "Enhance Cybersecurity (£10k)",
           onSelect: () => {
             adjustStat('cash', -10000);
             adjustStat('reputation', 5);
             adjustStat('week', 1);
-            logEvent("Security upgrade: -$10k, +Rep.");
+            logEvent("Security upgrade: -£10k, +Rep.");
             eventPositiveSound.play();
             updateStats();
           }
         },
         {
-          text: "File a Lawsuit ($15k)",
+          text: "File a Lawsuit (£15k)",
           onSelect: () => {
             adjustStat('cash', -15000);
             adjustStat('week', 1);
-            logEvent("Lawsuit filed: -$15k, outcome uncertain.");
+            logEvent("Lawsuit filed: -£15k, outcome uncertain.");
             eventNegativeSound.play();
             updateStats();
           }
         },
         {
-          text: "Negotiate NDA ($5k)",
+          text: "Negotiate NDA (£5k)",
           onSelect: () => {
             adjustStat('cash', -5000);
             adjustStat('week', 1);
-            logEvent("NDA signed: -$5k, rep stable.");
+            logEvent("NDA signed: -£5k, rep stable.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -511,7 +564,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', -5);
             adjustStat('cash', -5000);
             adjustStat('week', 1);
-            logEvent("Ignore: competitor profits, -Rep, -$5k lost sales.");
+            logEvent("Ignore: competitor profits, -Rep, -£5k lost sales.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -525,35 +578,35 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "Patent, trade secret, sell, or do nothing?",
       choices: [
         {
-          text: "File Patent ($8k)",
+          text: "File Patent (£8k)",
           onSelect: () => {
             adjustStat('cash', -8000);
             adjustStat('reputation', 5);
             adjustStat('environmental', 5);
             adjustStat('week', 1);
-            logEvent("Patent: -$8k, +Rep, +Env.");
+            logEvent("Patent: -£8k, +Rep, +Env.");
             eventPositiveSound.play();
             updateStats();
           }
         },
         {
-          text: "Trade Secret ($3k)",
+          text: "Trade Secret (£3k)",
           onSelect: () => {
             adjustStat('cash', -3000);
             adjustStat('week', 1);
-            logEvent("Trade secret: -$3k, no rep/env change.");
+            logEvent("Trade secret: -£3k, no rep/env change.");
             eventNegativeSound.play();
             updateStats();
           }
         },
         {
-          text: "Sell Innovation ($15k)",
+          text: "Sell Innovation (£15k)",
           onSelect: () => {
             adjustStat('cash', 15000);
             adjustStat('reputation', 2);
             adjustStat('environmental', 2);
             adjustStat('week', 1);
-            logEvent("Sold innovation: +$15k, +Rep, +Env, lose future control.");
+            logEvent("Sold innovation: +£15k, +Rep, +Env, lose future control.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -580,9 +633,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Reinvest",
           onSelect: () => {
             adjustStat('reputation', 5);
-            adjustStat('cash', -5000); // Reinvestment costs $5k
+            adjustStat('cash', -5000); // Reinvestment costs £5k
             adjustStat('week', 1);
-            logEvent("Reinvestment: Future growth, +Rep, -$5k");
+            logEvent("Reinvestment: Future growth, +Rep, -£5k");
             eventPositiveSound.play();
             updateStats();
           }
@@ -609,9 +662,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Yes, Party!",
           onSelect: () => {
             adjustStat('reputation', 5);
-            adjustStat('cash', -10000); // -$10k party cost
+            adjustStat('cash', -10000); // -£10k party cost
             adjustStat('week', 1);
-            logEvent("Big party: +Rep, -$10k costs.");
+            logEvent("Big party: +Rep, -£10k costs.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -639,9 +692,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', 5);
             adjustStat('environmental', 3);
-            adjustStat('cash', 5000); // +$5k new revenue
+            adjustStat('cash', 5000); // +£5k new revenue
             adjustStat('week', 1);
-            logEvent("New service: +Rep, +Env, +$5k revenue.");
+            logEvent("New service: +Rep, +Env, +£5k revenue.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -678,9 +731,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "No",
           onSelect: () => {
             adjustStat('reputation', -5);
-            adjustStat('cash', -2000); // Lose some sales $2k
+            adjustStat('cash', -2000); // Lose some sales £2k
             adjustStat('week', 1);
-            logEvent("No updates: loyalty drops, -Rep, lose $2k in future sales.");
+            logEvent("No updates: loyalty drops, -Rep, lose £2k in future sales.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -698,9 +751,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', 5);
             adjustStat('environmental', 5);
-            adjustStat('cash', -10000); // -$10,000 investment
+            adjustStat('cash', -10000); // -£10,000 investment
             adjustStat('week', 1);
-            logEvent("Extra R&D: Future-leading tech, +Rep, +Env, -$10k now.");
+            logEvent("Extra R&D: Future-leading tech, +Rep, +Env, -£10k now.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -727,9 +780,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', 5);
             adjustStat('environmental', 2);
-            adjustStat('cash', 5000); // +$5k synergy
+            adjustStat('cash', 5000); // +£5k synergy
             adjustStat('week', 1);
-            logEvent("M&A: Expanded IP, +Rep, +Env, +$5k synergy.");
+            logEvent("M&A: Expanded IP, +Rep, +Env, +£5k synergy.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -755,9 +808,9 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           text: "Loan",
           onSelect: () => {
-            adjustStat('cash', 10000); // +$10,000 immediate cash
+            adjustStat('cash', 10000); // +£10,000 immediate cash
             adjustStat('week', 1);
-            logEvent("Loan taken: +$10k now, long-term costs later.");
+            logEvent("Loan taken: +£10k now, long-term costs later.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -766,10 +819,10 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Downsize",
           onSelect: () => {
             adjustStat('reputation', -5);
-            adjustStat('cash', 5000); // +$5,000 saved from downsizing
+            adjustStat('cash', 5000); // +£5,000 saved from downsizing
             adjustStat('workers', -2);
             adjustStat('week', 1);
-            logEvent("Downsizing: +$5k short-term, -Rep, fewer workers.");
+            logEvent("Downsizing: +£5k short-term, -Rep, fewer workers.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -778,13 +831,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   ];
   
-  
-
-  // Mini-Game Triggers:
-  // Space them out evenly over 104 weeks:
-  // Mini-Game 1: Weeks 15, 30
-  // Mini-Game 2: Weeks 45, 60
-  // Mini-Game 3: Weeks 75, 90
+  // Mini-game logic remains the same, but after each minigame completion, also call checkEndConditions().
 
   // Mini-Game 1: Quality Control
   let miniGameCount1 = 0;
@@ -835,6 +882,7 @@ document.addEventListener("DOMContentLoaded", () => {
       eventNegativeSound.play();
     }
     updateStats();
+    checkEndConditions();
   }
 
   function handleMinigame1Timeout() {
@@ -844,6 +892,7 @@ document.addEventListener("DOMContentLoaded", () => {
     adjustStat('cash', -5000);
     eventNegativeSound.play();
     updateStats();
+    checkEndConditions();
   }
 
   // Mini-Game 2: Investment Round
@@ -883,7 +932,7 @@ document.addEventListener("DOMContentLoaded", () => {
     investmentPopup.classList.add("hidden");
     let fundingGain = clickedBags * 2000;
     if (fundingGain > 0) {
-      logEvent(`You collected ${clickedBags} money bags! Gained $${fundingGain.toLocaleString()}.`);
+      logEvent(`You collected ${clickedBags} money bags! Gained £${fundingGain.toLocaleString()}.`);
       adjustStat('cash', fundingGain);
       eventPositiveSound.play();
     } else {
@@ -891,6 +940,7 @@ document.addEventListener("DOMContentLoaded", () => {
       eventNegativeSound.play();
     }
     updateStats();
+    checkEndConditions();
   }
 
   // Mini-Game 3: Environmental Task
@@ -941,7 +991,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let reputationLoss = clickedTrash;
 
     if (clickedRecycle > 0) {
-      logEvent(`You processed ${clickedRecycle} recyclable items! +${sustainabilityGain} Environmental, +$${fundingGain}`);
+      logEvent(`You processed ${clickedRecycle} recyclable items! +${sustainabilityGain} Env, +£${fundingGain}`);
       adjustStat('environmental', sustainabilityGain);
       adjustStat('cash', fundingGain);
     } else {
@@ -949,12 +999,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (clickedTrash > 0) {
-      logEvent(`You incorrectly handled ${clickedTrash} trash bins! -${reputationLoss} Reputation`);
+      logEvent(`You incorrectly handled ${clickedTrash} trash bins! -${reputationLoss} Rep`);
       adjustStat('reputation', -reputationLoss);
     }
 
     eventPositiveSound.play();
     updateStats();
+    checkEndConditions();
   }
 
   startButton.addEventListener("click", () => {
@@ -962,6 +1013,9 @@ document.addEventListener("DOMContentLoaded", () => {
     startup = new Startup(chosenName);
     document.getElementById("stat-name").innerText = startup.name;
     startScreen.style.display = "none";
+
+    document.getElementById("central-company-name").innerText = startup.name;
+
 
     backgroundMusic.play().catch((err) => {
       console.log("User gesture required to start music:", err);
@@ -971,10 +1025,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   nextWeekButton.addEventListener("click", () => {
     // Advance one week
-    startup.week++;
+    adjustStat('week', 1);
     logEvent(`📅 Week ${startup.week}: Another week passes...`);
 
-    // Trigger mini-games at specified weeks
+    // Mini-game triggers at weeks 15,30 for MG1; 45,60 MG2; 75,90 MG3
     if ((startup.week === 15 || startup.week === 30) && miniGameCount1 < 2) {
       triggerMinigame1();
     } else if ((startup.week === 45 || startup.week === 60) && miniGameCount2 < 2) {
@@ -982,21 +1036,16 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if ((startup.week === 75 || startup.week === 90) && miniGameCount3 < 2) {
       triggerMinigame3();
     } else {
-      // Normal scenario if no mini-game triggered
+      // Normal scenario
       randomEvent();
     }
 
     updateStats();
-
-    // End conditions
-    if (startup.cash <= 0) {
-      showModal("💀 Your startup ran out of cash. Game Over!");
-      nextWeekButton.disabled = true;
-      decisionCancelSound.play();
-    } else if (startup.week >= 104) {
-      showModal("⏳ Your startup survived 2 years! Reflect on your journey.");
-      nextWeekButton.disabled = true;
-      decisionConfirmSound.play();
+    if (!checkEndConditions()) {
+      // Check if reached end of 2 years
+      if (startup.week >= MAX_WEEK) {
+        endGame("You survived 2 years!");
+      }
     }
   });
 
