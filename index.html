@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Startup Simulator</title>
+  <title>EV Startup Simulator</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,8 +12,7 @@
     <div class="start-screen" id="start-screen">
       <div class="start-content">
         <h1>Dear CEO,</h1>
-        <p>Welcome to the world of sustainable automotive innovation. Lead your EV startup to glory, overcome supply chain hurdles, and develop the perfect EV.</p>
-        <p>Name your flagship EV model:</p>
+        <p>Welcome to the EV startup simulator. Name your flagship EV:</p>
         <input type="text" id="car-name-input" placeholder="e.g. Aurora One"><br><br>
         <button id="start-button">Start</button>
       </div>
@@ -21,35 +20,33 @@
 
     <header>
       <img src="logo.png" alt="StartupLife Logo" class="logo" />
-      <p id="welcome-message">Can your startup survive the first 2 years?</p>
+      <p id="welcome-message">Can your startup survive 2 years (104 weeks)?</p>
     </header>
     
     <main>
+      <!-- Audio -->
       <audio id="button-click-sound" src="sounds/button-click.mp3"></audio>
       <audio id="decision-confirm-sound" src="sounds/decision-confirm.mp3"></audio>
       <audio id="decision-cancel-sound" src="sounds/decision-cancel.mp3"></audio>
       <audio id="event-positive-sound" src="sounds/event-positive.mp3"></audio>
       <audio id="event-negative-sound" src="sounds/event-negative.mp3"></audio>
-
-      <!-- New looping background music -->
       <audio id="background-music" src="sounds/background-music.mp3" loop></audio>
-
 
       <div class="stats">
         <h2>Startup Stats</h2>
         <p><strong>Startup Name:</strong> <span id="stat-name"></span></p>
 
         <div class="stat-item">
-          <label>Age (Months):</label>
+          <label>Week:</label>
           <div class="progress-bar">
-            <div id="stat-age-bar" class="progress-bar-inner"></div>
+            <div id="stat-week-bar" class="progress-bar-inner"></div>
           </div>
         </div>
 
         <div class="stat-item">
-          <label>Funding:</label>
+          <label>Cash:</label>
           <div class="progress-bar">
-            <div id="stat-funding-bar" class="progress-bar-inner"></div>
+            <div id="stat-cash-bar" class="progress-bar-inner"></div>
           </div>
         </div>
 
@@ -61,30 +58,23 @@
         </div>
 
         <div class="stat-item">
-          <label>Team Size:</label>
+          <label>Workers:</label>
           <div class="progress-bar">
-            <div id="stat-team-bar" class="progress-bar-inner"></div>
+            <div id="stat-workers-bar" class="progress-bar-inner"></div>
           </div>
         </div>
 
         <div class="stat-item">
-          <label>Product Progress:</label>
+          <label>Environmental:</label>
           <div class="progress-bar">
-            <div id="stat-product-bar" class="progress-bar-inner"></div>
-          </div>
-        </div>
-
-        <div class="stat-item">
-          <label>Sustainability:</label>
-          <div class="progress-bar">
-            <div id="stat-sustainability-bar" class="progress-bar-inner"></div>
+            <div id="stat-environmental-bar" class="progress-bar-inner"></div>
           </div>
         </div>
       </div>
 
       <div class="actions">
         <h2>Actions</h2>
-        <button id="next-month">Next Month</button>
+        <button id="next-week">Next Week</button>
         <div id="event-log"></div>
       </div>
     </main>
@@ -132,7 +122,7 @@
   <div id="envminigame-popup" class="popup hidden">
     <div class="popup-content">
       <h3>Environmental Task!</h3>
-      <p>Click as many ♻️ as you can in 5 seconds (ignore the 🗑️) to boost sustainability!</p>
+      <p>Click as many ♻️ as you can in 5 seconds (avoid 🗑️)!</p>
       <div id="envminigame-grid" class="minigame-grid"></div>
     </div>
   </div>
