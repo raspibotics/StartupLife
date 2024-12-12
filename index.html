@@ -31,6 +31,10 @@
       <audio id="event-positive-sound" src="sounds/event-positive.mp3"></audio>
       <audio id="event-negative-sound" src="sounds/event-negative.mp3"></audio>
 
+      <!-- New looping background music -->
+      <audio id="background-music" src="sounds/background-music.mp3" loop></audio>
+
+
       <div class="stats">
         <h2>Startup Stats</h2>
         <p><strong>Startup Name:</strong> <span id="stat-name"></span></p>
@@ -121,6 +125,15 @@
       <h3>Investment Round!</h3>
       <p>Click as many 💰 as you can in 3 seconds!</p>
       <div id="investment-grid" class="minigame-grid"></div>
+    </div>
+  </div>
+
+  <!-- Mini-Game 3 Popup: Environmental Task -->
+  <div id="envminigame-popup" class="popup hidden">
+    <div class="popup-content">
+      <h3>Environmental Task!</h3>
+      <p>Click as many ♻️ as you can in 5 seconds (ignore the 🗑️) to boost sustainability!</p>
+      <div id="envminigame-grid" class="minigame-grid"></div>
     </div>
   </div>
 

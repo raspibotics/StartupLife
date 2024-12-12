@@ -20,9 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const minigamePopup = document.getElementById("minigame-popup");
   const minigameGrid = document.getElementById("minigame-grid");
 
-  // Minigame 2 elements (Investment round)
+  // Minigame 2 elements
   const investmentPopup = document.getElementById("investment-popup");
   const investmentGrid = document.getElementById("investment-grid");
+
+  // Minigame 3 elements (environmental task)
+  const envMinigamePopup = document.getElementById("envminigame-popup");
+  const envMinigameGrid = document.getElementById("envminigame-grid");
 
   // Sounds
   const buttonClickSound = document.getElementById("button-click-sound");
@@ -30,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const decisionCancelSound = document.getElementById("decision-cancel-sound");
   const eventPositiveSound = document.getElementById("event-positive-sound");
   const eventNegativeSound = document.getElementById("event-negative-sound");
+  const backgroundMusic = document.getElementById("background-music");
 
   function showModal(message, options = { showCancel: false, callback: null }) {
     modalMessage.innerText = message;
@@ -101,13 +106,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("stat-product-bar").style.width = `${startup.productProgress}%`;
     document.getElementById("stat-sustainability-bar").style.width = `${startup.sustainability}%`;
 
-    // Restore the original color coding for each progress bar
-    document.getElementById("stat-age-bar").style.backgroundColor = "#4CAF50";        // Green
-    document.getElementById("stat-funding-bar").style.backgroundColor = "#2D70F4";   // Blue
-    document.getElementById("stat-reputation-bar").style.backgroundColor = "#FFEB3B";// Yellow
-    document.getElementById("stat-team-bar").style.backgroundColor = "#FFC107";      // Amber
-    document.getElementById("stat-product-bar").style.backgroundColor = "#FF5722";   // Red
-    document.getElementById("stat-sustainability-bar").style.backgroundColor = "#66BB6A"; // Greenish
+    // Restore original color coding
+    document.getElementById("stat-age-bar").style.backgroundColor = "#4CAF50";       
+    document.getElementById("stat-funding-bar").style.backgroundColor = "#2D70F4"; 
+    document.getElementById("stat-reputation-bar").style.backgroundColor = "#FFEB3B";
+    document.getElementById("stat-team-bar").style.backgroundColor = "#FFC107";
+    document.getElementById("stat-product-bar").style.backgroundColor = "#FF5722";
+    document.getElementById("stat-sustainability-bar").style.backgroundColor = "#66BB6A";
 
     console.log(`Morale: ${startup.teamMorale}% | Inventory: ${startup.inventoryLevel}% | Supply Reliability: ${startup.supplyReliability}% | IP Protection: ${startup.ipProtection}% | Sustainability: ${startup.sustainability}%`);
   }
@@ -244,7 +249,6 @@ document.addEventListener("DOMContentLoaded", () => {
       span.innerText = "💰";
       span.onclick = () => {
         clickedBags++;
-        // Remove or hide the bag after click
         span.style.visibility = "hidden";
       };
       investmentGrid.appendChild(span);
@@ -253,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
     investmentPopup.classList.remove("hidden");
     investmentTimeout = setTimeout(() => {
       handleMinigame2Timeout();
-    }, 3000); // 3 seconds
+    }, 3000); 
   }
 
   function handleMinigame2Timeout() {
@@ -270,11 +274,91 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStats();
   }
 
+  // Mini-Game 3: Environmental Task
+let miniGameCount3 = 0;
+const maxMiniGames3 = 2;
+let envTimeout;
+let clickedRecycle = 0;
+let clickedTrash = 0; // Track how many bins are clicked
+
+function triggerMinigame3() {
+  if (miniGameCount3 >= maxMiniGames3) return;
+  miniGameCount3++;
+  showMinigame3();
+}
+
+function showMinigame3() {
+  envMinigameGrid.innerHTML = "";
+  clickedRecycle = 0;
+  clickedTrash = 0;
+
+  // Mix of recycle (♻️) and trash (🗑️)
+  const totalItems = 16;
+  for (let i=0; i<totalItems; i++) {
+    const isRecycle = Math.random() < 0.5; // 50% chance for recycle or trash
+    const span = document.createElement("span");
+    span.innerText = isRecycle ? "♻️" : "🗑️";
+    span.onclick = () => {
+      if (span.innerText === "♻️") {
+        clickedRecycle++;
+        span.style.visibility = "hidden";
+      } else {
+        // Trash clicked - impose a penalty
+        clickedTrash++;
+        span.style.visibility = "hidden";
+      }
+    };
+    envMinigameGrid.appendChild(span);
+  }
+
+  envMinigamePopup.classList.remove("hidden");
+  envTimeout = setTimeout(() => {
+    handleMinigame3Timeout();
+  }, 5000); // 5 seconds
+}
+
+function handleMinigame3Timeout() {
+  envMinigamePopup.classList.add("hidden");
+  let sustainabilityGain = clickedRecycle * 2;   // 2 points per recycle symbol
+  let fundingGain = clickedRecycle * 500;         // $500 per recycle
+  let reputationLoss = clickedTrash * 1;          // Lose 1 reputation per trash clicked
+
+  if (clickedRecycle > 0) {
+    logEvent(`You processed ${clickedRecycle} recyclable items! +${sustainabilityGain} Sustainability, +$${fundingGain}`);
+    adjustStat('sustainability', sustainabilityGain);
+    adjustStat('funding', fundingGain);
+  } else {
+    logEvent("No recyclable items processed.");
+  }
+
+  if (clickedTrash > 0) {
+    logEvent(`You incorrectly handled ${clickedTrash} trash bins! -${reputationLoss} Reputation`);
+    adjustStat('reputation', -reputationLoss);
+  }
+
+  // If no recycle and trash was clicked, just the negative event logs appear.
+  eventPositiveSound.play();
+  if (clickedTrash > 0) {
+    // If trash was clicked, maybe play a negative sound, or both events occurred. 
+    // For simplicity, let's just keep the positive sound for recycling. 
+    // If you'd prefer a negative sound due to any trash, uncomment below:
+    // eventNegativeSound.play();
+  }
+
+  updateStats();
+}
+
   startButton.addEventListener("click", () => {
     const chosenName = carNameInput.value.trim() || "Tech Startup";
     startup = new Startup(chosenName);
     document.getElementById("stat-name").innerText = startup.name;
     startScreen.style.display = "none";
+
+    // Attempt to play background music after user interaction
+    backgroundMusic.play().catch((err) => {
+      console.log("User gesture required to start music:", err);
+    });
+    
     updateStats();
   });
 
@@ -282,13 +366,17 @@ document.addEventListener("DOMContentLoaded", () => {
     startup.months++;
     logEvent(`📅 Month ${startup.months}: Another month passes...`);
 
-    // Mini-game triggers
     // Mini-game 1 at month 6, 12
-    // Mini-game 2 at month 9, 18
     if ((startup.months === 6 || startup.months === 12) && miniGameCount1 < maxMiniGames1) {
       triggerMinigame1();
-    } else if ((startup.months === 9 || startup.months === 18) && miniGameCount2 < maxMiniGames2) {
+    }
+    // Mini-game 2 at month 9, 18
+    else if ((startup.months === 9 || startup.months === 18) && miniGameCount2 < maxMiniGames2) {
       triggerMinigame2();
+    }
+    // Mini-game 3 at month 15, 21
+    else if ((startup.months === 15 || startup.months === 21) && miniGameCount3 < maxMiniGames3) {
+      triggerMinigame3();
     } else {
       // Normal scenario
       randomEvent();
