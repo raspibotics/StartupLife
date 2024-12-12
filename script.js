@@ -32,6 +32,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const eventNegativeSound = document.getElementById("event-negative-sound");
   const backgroundMusic = document.getElementById("background-music");
 
+  const tickerContent = document.getElementById('ticker-content');
+
+  // Generate fake companies and prices
+  const companies = ["GreenEV", "Spark Motors", "ECharge Inc", "Voltra", "EcoRide", "ElectroFleet", "DriveOn", "BatteryTech", "WattCars"];
+  
+  for (let i=0; i<companies.length; i++){
+    const company = companies[i];
+    const price = (Math.random()*100 + 10).toFixed(2); // random price between 10 and 110
+    const isUp = Math.random() > 0.5; // 50% chance green or red
+
+    const span = document.createElement('span');
+    span.classList.add('ticker-item');
+    span.style.color = isUp ? '#0f0' : '#f00';
+    span.innerText = `${company} $${price}`;
+    tickerContent.appendChild(span);
+  }
+
   // Constants for max values
   const MAX_WEEK = 104;
   const MAX_CASH = 100000;

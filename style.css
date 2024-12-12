@@ -64,6 +64,34 @@ header img.logo {
   gap:5px;
 }
 
+/* Stock Ticker */
+.stock-ticker {
+  height:30px;
+  background:#333;
+  overflow:hidden;
+  position:relative;
+}
+
+.ticker-content {
+  display:inline-block;
+  white-space:nowrap;
+  position:absolute;
+  animation: scrollTicker 20s linear infinite;
+}
+
+/* Example for ticker item styling (in script) we will add spans */
+.ticker-item {
+  display:inline-block;
+  margin:0 20px;
+  font-size:14px;
+  color:#fff;
+}
+
+@keyframes scrollTicker {
+  0% { transform:translateX(100%); }
+  100% { transform:translateX(-100%); }
+}
+
 .content {
   flex:1;
   display:flex;
@@ -113,7 +141,7 @@ header img.logo {
 
 .animation-container {
   text-align:center;
-  margin-top:20px; /* Add space from top */
+  margin-top:20px;
 }
 
 .animation-container #central-company-name {
