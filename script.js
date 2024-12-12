@@ -11,17 +11,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const nextMonthButton = document.getElementById("next-month");
 
+  // Start screen elements
+  const startScreen = document.getElementById("start-screen");
+  const startButton = document.getElementById("start-button");
+  const carNameInput = document.getElementById("car-name-input");
+
+  // Minigame 1 elements
+  const minigamePopup = document.getElementById("minigame-popup");
+  const minigameGrid = document.getElementById("minigame-grid");
+
+  // Minigame 2 elements (Investment round)
+  const investmentPopup = document.getElementById("investment-popup");
+  const investmentGrid = document.getElementById("investment-grid");
+
   // Sounds
   const buttonClickSound = document.getElementById("button-click-sound");
   const decisionConfirmSound = document.getElementById("decision-confirm-sound");
   const decisionCancelSound = document.getElementById("decision-cancel-sound");
   const eventPositiveSound = document.getElementById("event-positive-sound");
   const eventNegativeSound = document.getElementById("event-negative-sound");
-
-  if (!popup || !popupDescription || !popupTitle || !popupChoices || !nextMonthButton || !modalMessage || !modalOk) {
-    console.error("One or more critical elements are missing from the DOM.");
-    return;
-  }
 
   function showModal(message, options = { showCancel: false, callback: null }) {
     modalMessage.innerText = message;
@@ -45,27 +53,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // New function: show multiple choice scenario
-  // title: string, description: string, choices: array of {text: string, onSelect: function}
   function showChoices(title, description, choices) {
     popupTitle.innerText = title;
     popupDescription.innerText = description;
-
-    // Clear old buttons
     popupChoices.innerHTML = "";
-
-    choices.forEach((choice, index) => {
+    choices.forEach((choice) => {
       const btn = document.createElement("button");
       btn.innerText = choice.text;
       btn.onclick = () => {
         popup.classList.add("hidden");
-        // Play confirm sound for a decision
         decisionConfirmSound.play();
         choice.onSelect();
       };
       popupChoices.appendChild(btn);
     });
-
     popup.classList.remove("hidden");
   }
 
@@ -86,9 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const startupName = prompt("Enter your startup's name:") || "Tech Startup";
-  const startup = new Startup(startupName);
-  document.getElementById("stat-name").innerText = startup.name;
+  let startup;
 
   function adjustStat(statName, amount, min = 0, max = 100000) {
     startup[statName] = Math.max(min, Math.min(max, startup[statName] + amount));
@@ -102,6 +101,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("stat-product-bar").style.width = `${startup.productProgress}%`;
     document.getElementById("stat-sustainability-bar").style.width = `${startup.sustainability}%`;
 
+    // Restore the original color coding for each progress bar
+    document.getElementById("stat-age-bar").style.backgroundColor = "#4CAF50";        // Green
+    document.getElementById("stat-funding-bar").style.backgroundColor = "#2D70F4";   // Blue
+    document.getElementById("stat-reputation-bar").style.backgroundColor = "#FFEB3B";// Yellow
+    document.getElementById("stat-team-bar").style.backgroundColor = "#FFC107";      // Amber
+    document.getElementById("stat-product-bar").style.backgroundColor = "#FF5722";   // Red
+    document.getElementById("stat-sustainability-bar").style.backgroundColor = "#66BB6A"; // Greenish
+
     console.log(`Morale: ${startup.teamMorale}% | Inventory: ${startup.inventoryLevel}% | Supply Reliability: ${startup.supplyReliability}% | IP Protection: ${startup.ipProtection}% | Sustainability: ${startup.sustainability}%`);
   }
 
@@ -113,206 +120,183 @@ document.addEventListener("DOMContentLoaded", () => {
     log.scrollTop = log.scrollHeight;
   }
 
-  // Updated scenarios with multiple options:
   const scenarios = [
     {
       title: "Investor Pitch for Modular Battery Packs",
-      description: "An investor is interested in your innovative modular battery pack approach. How do you present your idea?",
+      description: "An investor is interested in your innovative modular battery pack approach...",
       choices: [
         { 
-          text: "Show them a working prototype", 
+          text: "Show prototype", 
           onSelect: () => {
             const successChance = (startup.teamMorale > 60 && startup.productProgress > 30) ? 0.8 : 0.4;
             if (Math.random() < successChance) {
               adjustStat('funding', 30000);
               adjustStat('reputation', 5);
-              logEvent("You dazzled the investor with a prototype! Gained $30,000 and improved your reputation.");
+              logEvent("Dazzled investor with prototype! +$30,000, Reputation +5");
               eventPositiveSound.play();
             } else {
               adjustStat('reputation', -5);
-              logEvent("Your prototype failed to impress. No funding gained and your reputation takes a small hit.");
+              logEvent("Prototype unimpressive. No funding, -5 Reputation");
               eventNegativeSound.play();
             }
             updateStats();
           }
         },
-        { 
-          text: "Emphasize sustainability features", 
+        {
+          text: "Emphasize sustainability",
           onSelect: () => {
-            // If sustainability is high, better chance
             const successChance = startup.sustainability > 60 ? 0.7 : 0.3;
             if (Math.random() < successChance) {
               adjustStat('funding', 20000);
               adjustStat('reputation', 5);
-              logEvent("The investor loves your green angle, granting $20,000 and boosting your reputation!");
+              logEvent("Investor loved green angle! +$20,000, Reputation +5");
               eventPositiveSound.play();
             } else {
-              logEvent("Investor found your sustainability pitch lacking evidence. No deal made.");
+              logEvent("Sustainability pitch not convincing. No deal.");
               eventNegativeSound.play();
             }
-            updateStats();
-          }
-        },
-        {
-          text: "Offer a small discount on future orders",
-          onSelect: () => {
-            // Guaranteed smaller funding, but no risk
-            adjustStat('funding', 10000);
-            adjustStat('reputation', 2);
-            logEvent("You secure a modest $10,000 investment by offering a future discount. Reputation up slightly.");
-            eventPositiveSound.play();
-            updateStats();
-          }
-        }
-      ]
-    },
-    {
-      title: "Sustainable Materials Supplier",
-      description: "A supplier offers sustainably sourced side panels at a higher cost. Choose your approach:",
-      choices: [
-        {
-          text: "Pay extra for green materials",
-          onSelect: () => {
-            adjustStat('funding', -5000);
-            adjustStat('sustainability', 10);
-            adjustStat('supplyReliability', 10);
-            adjustStat('reputation', 5);
-            logEvent("You chose greener suppliers. Costs rise but sustainability and brand image improve!");
-            eventPositiveSound.play();
-            updateStats();
-          }
-        },
-        {
-          text: "Try to negotiate a better deal",
-          onSelect: () => {
-            // Negotiation success depends on reputation
-            const successChance = startup.reputation > 50 ? 0.6 : 0.3;
-            if (Math.random() < successChance) {
-              adjustStat('funding', -3000);
-              adjustStat('sustainability', 8);
-              adjustStat('reputation', 3);
-              logEvent("Negotiation successful! You get green materials at a lower extra cost.");
-              eventPositiveSound.play();
-            } else {
-              adjustStat('funding', -5000);
-              adjustStat('sustainability', 5);
-              logEvent("Negotiation failed. You still pay the premium, with a modest sustainability gain.");
-              eventNegativeSound.play();
-            }
-            updateStats();
-          }
-        },
-        {
-          text: "Stick with cheaper, less eco-friendly panels",
-          onSelect: () => {
-            adjustStat('sustainability', -10);
-            adjustStat('reputation', -5);
-            logEvent("You stick to cheaper panels. Critics question your eco-commitment.");
-            eventNegativeSound.play();
-            updateStats();
-          }
-        }
-      ]
-    },
-    {
-      title: "EV Battery Disposal",
-      description: "You must handle old EV batteries. How do you proceed?",
-      choices: [
-        {
-          text: "Pay for proper recycling",
-          onSelect: () => {
-            adjustStat('funding', -8000);
-            adjustStat('sustainability', 15);
-            adjustStat('reputation', 5);
-            logEvent("You recycled properly. Environmental groups applaud you. Reputation and sustainability rise!");
-            eventPositiveSound.play();
-            updateStats();
-          }
-        },
-        {
-          text: "Sell them cheaply to a third-party recycler",
-          onSelect: () => {
-            // Less cost than proper recycling but lower gains in rep/sustainability
-            adjustStat('funding', -4000);
-            adjustStat('sustainability', 5);
-            adjustStat('reputation', 2);
-            logEvent("You found a cheaper recycling option. It's not perfect, but still decent green PR.");
-            eventPositiveSound.play();
-            updateStats();
-          }
-        },
-        {
-          text: "Dump them illegally",
-          onSelect: () => {
-            adjustStat('funding', -20000);
-            adjustStat('reputation', -20);
-            adjustStat('sustainability', -20);
-            logEvent("You dumped the batteries illegally. Heavy fines and public outrage ensue!");
-            eventNegativeSound.play();
-            updateStats();
-          }
-        }
-      ]
-    },
-    // ... You would follow the same pattern for the remaining scenarios
-    // Due to length, let's convert a few more scenarios to multiple-choice as examples:
-
-    {
-      title: "Overtime Software Update",
-      description: "A crucial software update can be rushed if the team works overtime. What's your strategy?",
-      choices: [
-        {
-          text: "Force all-nighter",
-          onSelect: () => {
-            adjustStat('teamMorale', -15);
-            adjustStat('productProgress', 10);
-            logEvent("Overtime granted a 10% product progress boost but morale suffered.");
-            eventNegativeSound.play();
-            updateStats();
-          }
-        },
-        {
-          text: "Offer overtime pay & pizza",
-          onSelect: () => {
-            adjustStat('funding', -2000);
-            adjustStat('productProgress', 8);
-            adjustStat('teamMorale', -5);
-            logEvent("Paid overtime made the crunch more bearable. Good progress boost, morale only slightly hit.");
-            eventPositiveSound.play();
-            updateStats();
-          }
-        },
-        {
-          text: "No overtime, maintain morale",
-          onSelect: () => {
-            adjustStat('teamMorale', 5);
-            logEvent("No overtime. Morale improves but no immediate progress gain.");
-            eventPositiveSound.play();
             updateStats();
           }
         }
       ]
     }
-
-    // You would continue this approach for all 20 scenarios from the previous examples.
-    // Due to length constraints of this answer, we’ve shown several examples rewritten with multiple choice.
-    // In your actual code, convert all scenarios in a similar manner.
-
   ];
 
-  function randomEvent() {
-    const randomIndex = Math.floor(Math.random() * scenarios.length);
-    const scenario = scenarios[randomIndex];
-    // Show scenario with multiple choices
-    showChoices(scenario.title, scenario.description, scenario.choices);
+  // Mini-Game 1: Quality Control
+  let miniGameCount1 = 0;
+  const maxMiniGames1 = 2;
+  let miniGameTimeout;
+
+  function triggerMinigame1() {
+    if (miniGameCount1 >= maxMiniGames1) return;
+    miniGameCount1++;
+    showMinigame1();
   }
+
+  function showMinigame1() {
+    minigameGrid.innerHTML = "";
+    const emojis = ["🔋", "🚗", "🔌", "⚡"];
+    const mainEmoji = emojis[Math.floor(Math.random()*emojis.length)];
+    let oddEmoji = mainEmoji;
+    while (oddEmoji === mainEmoji) {
+      oddEmoji = emojis[Math.floor(Math.random()*emojis.length)];
+    }
+
+    const totalItems = 16;
+    const oddIndex = Math.floor(Math.random()*totalItems);
+
+    for (let i=0; i<totalItems; i++) {
+      const span = document.createElement("span");
+      span.innerText = (i === oddIndex) ? oddEmoji : mainEmoji;
+      span.onclick = () => handleMinigame1Click(i === oddIndex);
+      minigameGrid.appendChild(span);
+    }
+
+    minigamePopup.classList.remove("hidden");
+    miniGameTimeout = setTimeout(() => {
+      handleMinigame1Timeout();
+    }, 5000);
+  }
+
+  function handleMinigame1Click(isOdd) {
+    clearTimeout(miniGameTimeout);
+    minigamePopup.classList.add("hidden");
+    if (isOdd) {
+      logEvent("You found the faulty component! Quality improves.");
+      adjustStat('reputation', 5);
+      adjustStat('funding', 5000);
+      eventPositiveSound.play();
+    } else {
+      logEvent("That wasn't the faulty part!");
+      eventNegativeSound.play();
+    }
+    updateStats();
+  }
+
+  function handleMinigame1Timeout() {
+    minigamePopup.classList.add("hidden");
+    logEvent("Time’s up! Failed to identify the issue.");
+    adjustStat('reputation', -5);
+    adjustStat('funding', -5000);
+    eventNegativeSound.play();
+    updateStats();
+  }
+
+  // Mini-Game 2: Investment Round
+  let miniGameCount2 = 0;
+  const maxMiniGames2 = 2;
+  let investmentTimeout;
+  let clickedBags = 0;
+
+  function triggerMinigame2() {
+    if (miniGameCount2 >= maxMiniGames2) return;
+    miniGameCount2++;
+    showMinigame2();
+  }
+
+  function showMinigame2() {
+    investmentGrid.innerHTML = "";
+    clickedBags = 0;
+
+    const totalItems = 20; 
+    for (let i=0; i<totalItems; i++) {
+      const span = document.createElement("span");
+      span.innerText = "💰";
+      span.onclick = () => {
+        clickedBags++;
+        // Remove or hide the bag after click
+        span.style.visibility = "hidden";
+      };
+      investmentGrid.appendChild(span);
+    }
+
+    investmentPopup.classList.remove("hidden");
+    investmentTimeout = setTimeout(() => {
+      handleMinigame2Timeout();
+    }, 3000); // 3 seconds
+  }
+
+  function handleMinigame2Timeout() {
+    investmentPopup.classList.add("hidden");
+    let fundingGain = clickedBags * 2000;
+    if (fundingGain > 0) {
+      logEvent(`You collected ${clickedBags} money bags! Gained $${fundingGain.toLocaleString()}.`);
+      adjustStat('funding', fundingGain);
+      eventPositiveSound.play();
+    } else {
+      logEvent("No bags collected in time, no extra funding gained.");
+      eventNegativeSound.play();
+    }
+    updateStats();
+  }
+
+  startButton.addEventListener("click", () => {
+    const chosenName = carNameInput.value.trim() || "Tech Startup";
+    startup = new Startup(chosenName);
+    document.getElementById("stat-name").innerText = startup.name;
+    startScreen.style.display = "none";
+    updateStats();
+  });
 
   nextMonthButton.addEventListener("click", () => {
     startup.months++;
     logEvent(`📅 Month ${startup.months}: Another month passes...`);
-    randomEvent();
+
+    // Mini-game triggers
+    // Mini-game 1 at month 6, 12
+    // Mini-game 2 at month 9, 18
+    if ((startup.months === 6 || startup.months === 12) && miniGameCount1 < maxMiniGames1) {
+      triggerMinigame1();
+    } else if ((startup.months === 9 || startup.months === 18) && miniGameCount2 < maxMiniGames2) {
+      triggerMinigame2();
+    } else {
+      // Normal scenario
+      randomEvent();
+    }
+
     updateStats();
 
+    // End conditions
     if (startup.funding <= 0) {
       showModal("💀 Your startup ran out of funding. Game Over!");
       nextMonthButton.disabled = true;
@@ -328,5 +312,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  updateStats();
+  function randomEvent() {
+    if (scenarios.length > 0) {
+      const randomIndex = Math.floor(Math.random() * scenarios.length);
+      const scenario = scenarios[randomIndex];
+      showChoices(scenario.title, scenario.description, scenario.choices);
+    } else {
+      logEvent("No scenario available this month.");
+    }
+  }
 });

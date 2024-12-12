@@ -8,6 +8,17 @@
 </head>
 <body>
   <div class="game-container">
+    <!-- Start Screen -->
+    <div class="start-screen" id="start-screen">
+      <div class="start-content">
+        <h1>Dear CEO,</h1>
+        <p>Welcome to the world of sustainable automotive innovation. Lead your EV startup to glory, overcome supply chain hurdles, and develop the perfect EV.</p>
+        <p>Name your flagship EV model:</p>
+        <input type="text" id="car-name-input" placeholder="e.g. Aurora One"><br><br>
+        <button id="start-button">Start</button>
+      </div>
+    </div>
+
     <header>
       <img src="logo.png" alt="StartupLife Logo" class="logo" />
       <p id="welcome-message">Can your startup survive the first 2 years?</p>
@@ -92,6 +103,24 @@
       <h3 id="popup-title"></h3>
       <p id="popup-description"></p>
       <div class="popup-buttons" id="popup-choices"></div>
+    </div>
+  </div>
+
+  <!-- Mini-Game 1 Popup: Quality Control -->
+  <div id="minigame-popup" class="popup hidden">
+    <div class="popup-content">
+      <h3>Quality Control Check!</h3>
+      <p>Spot the odd component out. You have 5 seconds!</p>
+      <div id="minigame-grid" class="minigame-grid"></div>
+    </div>
+  </div>
+
+  <!-- Mini-Game 2 Popup: Investment Round -->
+  <div id="investment-popup" class="popup hidden">
+    <div class="popup-content">
+      <h3>Investment Round!</h3>
+      <p>Click as many 💰 as you can in 3 seconds!</p>
+      <div id="investment-grid" class="minigame-grid"></div>
     </div>
   </div>
 
