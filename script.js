@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalCancel = document.getElementById("modal-cancel");
 
   const nextWeekButton = document.getElementById("next-week");
+  const bgmslider = document.getElementById("bgm-volume");
+  const sfxSlider = document.getElementById("sfx-volume");
 
   // Start screen elements
   const startScreen = document.getElementById("start-screen");
@@ -31,8 +33,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const eventPositiveSound = document.getElementById("event-positive-sound");
   const eventNegativeSound = document.getElementById("event-negative-sound");
   const backgroundMusic = document.getElementById("background-music");
+  const sfx = [buttonClickSound, decisionConfirmSound, decisionCancelSound, eventPositiveSound, eventNegativeSound];
 
   const tickerContent = document.getElementById('ticker-content');
+
+  bgmslider.addEventListener("input", () => {
+    backgroundMusic.volume = bgmslider.value;
+
+  });
+
+  sfxSlider.addEventListener("input", () => {
+    for (let i=0; i<sfx.length; i++) {
+      sfx[i].volume = sfxSlider.value;
+    }
+  });
 
   // Generate fake companies and prices
   const companies = ["GreenEV", "Spark Motors", "ECharge Inc", "Voltra", "EcoRide", "ElectroFleet", "DriveOn", "BatteryTech", "WattCars"];
