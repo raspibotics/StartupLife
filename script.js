@@ -63,6 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
     tickerContent.appendChild(span);
   }
 
+  
+
   // Constants for max values
   const MAX_WEEK = 104;
   const MAX_CASH = 100000;
