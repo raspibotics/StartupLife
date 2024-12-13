@@ -355,7 +355,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // 6. Battery Disposal
     {
-      title: "Disposal of Old Batteries",
+      title: "Disposal of old vehicle batteries",
       description: "Recycle properly (costly) or illegally dump?",
       choices: [
         {
@@ -365,7 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', 10);
             adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("Recycle: +Rep, +Env, -£10k for compliance.");
+            logEvent("Recycle: You properly recycle the big lithium-ion batteries which decreases cash as it is expensive to do. However you as a company are making the correct enriovnmental choice.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -377,7 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', -10);
             adjustStat('cash', -20000); // -£20,000
             adjustStat('week', 1);
-            logEvent("Fly-tip: Heavy fines, -Rep, -Env, -£20k.");
+            logEvent("Fly-tip: You significantly damage the environment and HSE offciers find out and fine you heavily and you make the news for being a shady company. Decrease everything.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -387,8 +387,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // 7. Side Panels Choice
     {
-      title: "Source of Side Panels",
-      description: "Choose sustainable but expensive panels or cheap unsustainable ones.",
+      title: "Side panel choice",
+      description: "You operate a push model for the supply of the side panels, not much storage space needed and so you always have them to hand when you recieve an order. You can either order more expensive side panels from a well trusted and more susatinable source, or cheaper panels from a shady supplier with really bad power consumption during manufacturing?",
       choices: [
         {
           text: "Sustainable Panels",
@@ -397,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', 10);
             adjustStat('cash', 5000); // +£5,000 (gov investment)
             adjustStat('week', 1);
-            logEvent("Sustainable choice: +Rep, +Env, +£5k investment.");
+            logEvent("Sustainable choice: Reputation and environmental score increases. The government also give you an investment from being a sustainable start-up. Well done!");
             eventPositiveSound.play();
             updateStats();
           }
@@ -409,7 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', -5);
             adjustStat('cash', -10000); // -£10,000 fee
             adjustStat('week', 1);
-            logEvent("Cheap panels: -Rep, -Env, -£10k due to penalties.");
+            logEvent("Cheap panels: Reputation and environental score decreases. Have to pay added tax and fees shipping the doors in as the company are not susatinable.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -420,7 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 8. Inventory Tracking
     {
       title: "Inventory Management System",
-      description: "Implement tracking to prevent stockouts?",
+      description: "Implement inventory tracking?",
       choices: [
         {
           text: "Track Inventory",
@@ -428,7 +428,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', 5);
             adjustStat('cash', -5000); // -£5,000 cost
             adjustStat('week', 1);
-            logEvent("Inventory tracking: better delivery, +Rep, -£5k.");
+            logEvent("You now know exactly what you have in stock and what you need. Supplier is happier as they know what demands they need to meet. Car deliveries are more on time and reputation increase. Slight cash decrease in order to track");
             eventPositiveSound.play();
             updateStats();
           }
@@ -439,7 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', -5);
             adjustStat('cash', -10000); // -£10,000 due to stockouts and fixes
             adjustStat('week', 1);
-            logEvent("No tracking: stockouts cost you -£10k and -Rep.");
+            logEvent("No tracking means you run out of stock on several occasions. This leads to an irritated supplier and consumer. Reputation and cash decrease due to paying extra to reimburse customer and supplier.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -450,7 +450,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 9. Supplier Relationship Building
     {
       title: "Build Supplier Relationships",
-      description: "Invest in stable specs and mutual trust with suppliers?",
+      description: "Invest in continuity of supply from supplier?",
       choices: [
         {
           text: "Yes",
@@ -458,7 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', 5);
             adjustStat('cash', -5000); // -£5,000 to invest in relationship
             adjustStat('week', 1);
-            logEvent("Supplier ties: +Rep, -£5k for stable supply.");
+            logEvent("Continuous supply means a predictable demand which makes both yours and suppleirs job easier. You can now forecast costs better on your expenditure model. Increased reputaion but costs slightly more.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -469,7 +469,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', -5);
             adjustStat('cash', -5000); // -£5,000 due to inefficiencies
             adjustStat('week', 1);
-            logEvent("Ignoring suppliers: delays cost -Rep, -£5k.");
+            logEvent("You have to constantly bug the supplier for order numbers and a less stable income makes modeling expendature harder. Reputation decrease and cash decrease as supplier adds extra costs for last minute orders.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -480,14 +480,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // 10. Massive Supply Chain Shock
     {
       title: "Global Supply Chain Shock",
-      description: "Shortage hits. Buy expensive materials or wait it out?",
+      description: "The worldwide supply of lithium breaks down, source lithium at a high cost to carry on production or wait it out?",
       choices: [
         {
           text: "Buy at High Cost",
           onSelect: () => {
+            adjustStat('reputation', 5);
             adjustStat('cash', -15000); // -£15,000
             adjustStat('week', 1);
-            logEvent("You secure materials at high cost: -£15k.");
+            logEvent("You secure materials at high cost but can carry on making product so reputaion increase");
             eventNegativeSound.play();
             updateStats();
           }
@@ -498,7 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', -5);
             adjustStat('cash', -5000); // -£5,000 lost sales
             adjustStat('week', 1);
-            logEvent("You wait: lost sales, -Rep, -£5k.");
+            logEvent("You wait and miss out on product sales, cash and reputation decrease");
             eventNegativeSound.play();
             updateStats();
           }
@@ -658,15 +659,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // 14. After 1000 Sales: Reinvest or Holiday
     {
       title: "Profit After 1000 Sales",
-      description: "You made profit. Reinvest or go on holiday?",
+      description: "You total income has just gone above total costs meaning you have just made your first bit of profit as a business. Reinvest or go on holiday?",
       choices: [
         {
           text: "Reinvest",
           onSelect: () => {
             adjustStat('reputation', 5);
-            adjustStat('cash', -5000); // Reinvestment costs £5k
+            adjustStat('cash', 5000); // Reinvestment puts £5k in
             adjustStat('week', 1);
-            logEvent("Reinvestment: Future growth, +Rep, -£5k");
+            logEvent("Reinvestment for future growth, increase reputation and cash");
             eventPositiveSound.play();
             updateStats();
           }
@@ -676,7 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -3);
             adjustStat('week', 1);
-            logEvent("Holiday: missed growth, -Rep, no cash change.");
+            logEvent("You went on holiday and perhaps oppurtunity for overall growth, decrease reputation.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -692,10 +693,10 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           text: "Yes, Party!",
           onSelect: () => {
-            adjustStat('reputation', 5);
+            adjustStat('reputation', 7);
             adjustStat('cash', -10000); // -£10k party cost
             adjustStat('week', 1);
-            logEvent("Big party: +Rep, -£10k costs.");
+            logEvent("Big party, meet lots of important contacts which could be important later on. Big cash decrease.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -705,7 +706,7 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -2);
             adjustStat('week', 1);
-            logEvent("No party: save cash, but -Rep from lower brand visibility.");
+            logEvent("No party means saved cash, but rep decreases and you miss out on an oppurtunity to meet important contacts.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -715,17 +716,15 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // 16. Usage-Based Charging Service
     {
-      title: "Usage-Based Charging",
-      description: "Offer a service for continuous charger use at a set fee?",
+      title: "Usage-Based Service",
+      description: "Offer a usage-based service: customers pay a set fee each month but can use the EV chargers at anytime...",
       choices: [
         {
           text: "Yes",
           onSelect: () => {
-            adjustStat('reputation', 5);
-            adjustStat('environmental', 3);
             adjustStat('cash', 5000); // +£5k new revenue
             adjustStat('week', 1);
-            logEvent("New service: +Rep, +Env, +£5k revenue.");
+            logEvent("Your service brings in a steady income stream for the company, allowing you to model your finances better. Increased cash.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -734,7 +733,7 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "No",
           onSelect: () => {
             adjustStat('week', 1);
-            logEvent("No new service: missed ongoing revenue.");
+            logEvent("Missed extra revenue income stream. Unlucky!");
             eventNegativeSound.play();
             updateStats();
           }
@@ -745,7 +744,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 17. Free Software Updates
     {
       title: "Free Software Updates",
-      description: "Offer free efficiency updates to customers?",
+      description: "Offer a loss-leader service to constantly update your EV vehcicles",
       choices: [
         {
           text: "Yes",
@@ -753,7 +752,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', 5);
             adjustStat('environmental', 2);
             adjustStat('week', 1);
-            logEvent("Free updates: +Rep, +Env, loyalty rises.");
+            logEvent("Free updates means the cars are always as efficient as possible and you build a strong customer relationship meaning they are more likely to support your compnay over other less personal companies.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -764,7 +763,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', -5);
             adjustStat('cash', -2000); // Lose some sales £2k
             adjustStat('week', 1);
-            logEvent("No updates: loyalty drops, -Rep, lose £2k in future sales.");
+            logEvent("Loss of trust with customers which damages reputation and less sales as a result.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -774,17 +773,16 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // 18. Additional R&D Spending
     {
-      title: "Extra R&D for Best Mileage",
-      description: "Invest more in R&D and raise product price?",
+      title: "R&D for a more efficient vehicle?",
+      description: "Invest more in R&D but as a result total product cost and thus final purchase prices increases.",
       choices: [
         {
           text: "Yes",
           onSelect: () => {
-            adjustStat('reputation', 5);
             adjustStat('environmental', 5);
             adjustStat('cash', -10000); // -£10,000 investment
             adjustStat('week', 1);
-            logEvent("Extra R&D: Future-leading tech, +Rep, +Env, -£10k now.");
+            logEvent("You breakthrough and create a more efficient vehicle, as you have built a good cusotmer rapport sales don't decrease due to increased product price.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -793,7 +791,7 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "No",
           onSelect: () => {
             adjustStat('week', 1);
-            logEvent("No extra R&D: remain average, stable but no growth.");
+            logEvent("No extra R&D results in a stable car price but no real compnay growth.");
             eventNegativeSound.play();
             updateStats();
           }
