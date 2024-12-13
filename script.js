@@ -264,39 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ]
     },
   
-    // 3. Push vs Pull Manufacturing (3rd occurrence)
-    {
-      title: "Manufacturing Decision Once More",
-      description: "Will you maintain Just-In-Time (Pull) or mass-produce (Push)?",
-      choices: [
-        {
-          text: "Pull Model",
-          onSelect: () => {
-            adjustStat('reputation', 5);
-            adjustStat('environmental', 5);
-            adjustStat('cash', 10000); // +£10,000
-            adjustStat('week', 1);
-            logEvent("Pull again: less waste, more profit. Environment, reputation and cash increase!");
-            eventPositiveSound.play();
-            updateStats();
-          }
-        },
-        {
-          text: "Push Model",
-          onSelect: () => {
-            adjustStat('reputation', -5);
-            adjustStat('environmental', -5);
-            adjustStat('cash', -10000); // -£10,000
-            adjustStat('week', 1);
-            logEvent("Push: Excess stock. Environmental and cash decrease.");
-            eventNegativeSound.play();
-            updateStats();
-          }
-        }
-      ]
-    },
-  
-    // 4. R&D Investment Opportunity
+      // 4. R&D Investment Opportunity
     {
       title: "R&D Investment",
       description: "Invest £10,000 in R&D? Will it lead to a breakthrough?",
@@ -306,7 +274,8 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("You invest in R&D: -£10k now for possible future gains.");
+            adjustStat('workers', 1);
+            logEvent("You invest in R&D: -£10k now for possible future gains. Also needed to hire an extra worker.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -428,7 +397,8 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', 5);
             adjustStat('cash', -5000); // -£5,000 cost
             adjustStat('week', 1);
-            logEvent("You now know exactly what you have in stock and what you need. Supplier is happier as they know what demands they need to meet. Car deliveries are more on time and reputation increase. Slight cash decrease in order to track");
+            adjustStat('workers', 1);
+            logEvent("You now know exactly what you have in stock and what you need. Supplier is happier as they know what demands they need to meet. Car deliveries are more on time and reputation increase. Slight cash decrease in order to pay an extra worker to track");
             eventPositiveSound.play();
             updateStats();
           }
@@ -752,7 +722,8 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', 5);
             adjustStat('environmental', 2);
             adjustStat('week', 1);
-            logEvent("Free updates means the cars are always as efficient as possible and you build a strong customer relationship meaning they are more likely to support your compnay over other less personal companies.");
+            adjustStat('workers', 1);
+            logEvent("Free updates means the cars are always as efficient as possible and you build a strong customer relationship meaning they are more likely to support your compnay over other less personal companies. Need to hire an extra worker.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -782,6 +753,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', 5);
             adjustStat('cash', -10000); // -£10,000 investment
             adjustStat('week', 1);
+            adjustStat('workers', 1);
             logEvent("You breakthrough and create a more efficient vehicle, as you have built a good cusotmer rapport sales don't decrease due to increased product price.");
             eventPositiveSound.play();
             updateStats();
@@ -849,7 +821,7 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -5);
             adjustStat('cash', 5000); // +£5,000 saved from downsizing
-            adjustStat('workers', -2);
+            adjustStat('workers', -4);
             adjustStat('week', 1);
             logEvent("Downsizing: +£5k short-term, -Rep, fewer workers.");
             eventNegativeSound.play();
