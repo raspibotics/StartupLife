@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Generate fake companies and prices
-  const companies = ["GreenEV", "Spark Motors", "ECharge Inc", "Voltra", "EcoRide", "ElectroFleet", "DriveOn", "BatteryTech", "WattCars"];
+  const companies = ["Goggle", "Tezla", "Nvisia", "Hamazon", "Bapple", "Beta", "Halmart", "HPMorgan", "Microloft"];
   
   for (let i=0; i<companies.length; i++){
     const company = companies[i];
@@ -202,8 +202,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const scenarios = [
     // 1. Push vs Pull Manufacturing (1st occurrence)
     {
-      title: "Manufacturing Model Choice",
-      description: "Choose between Pull (Just-In-Time) or Push production models for your EVs.",
+      title: "Manufacturing Supply Model Choice",
+      description: "Choose between using a Pull or Push model for the amount of finished, customer ready cars.",
       choices: [
         {
           text: "Pull Model",
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', 5);
             adjustStat('cash', 10000); // +£10,000
             adjustStat('week', 1);
-            logEvent("You opt for Pull: Tailored production, no waste. +Rep, +Env, +£10k");
+            logEvent("You have chosen Pull. This is a good choice for EV. You only make a finsihed car when one is bought, thus you waste less material and money. Customers also get a more personal car. Environment, reputation and cash increase!");
             eventPositiveSound.play();
             updateStats();
           }
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', -5);
             adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("You choose Push: Overproduction, storage costs. -Rep, -Env, -£10k");
+            logEvent("You chosen Push. You start to produce lots of finished cars, having to pay for lots of storage space, some finished cars don't sell and then become outdated in the quickly evolving sector. Environmental and cash decrease.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -234,8 +234,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // 2. Push vs Pull Manufacturing (2nd occurrence)
     {
-      title: "Revisiting Manufacturing Strategy",
-      description: "Stable EV demand allows forecasting. Stick with Pull or go Push?",
+      title: "Revisiting Manufacturing Supply Model Strategy",
+      description: "Remembering EV production is a stable product and can be well forecasated. Pull or Push? Stick with your orginal or switch it up?",
       choices: [
         {
           text: "Pull Model",
@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', 5);
             adjustStat('cash', 10000); // +£10,000
             adjustStat('week', 1);
-            logEvent("Again, Pull pays off: +Rep, +Env, +£10k");
+            logEvent("Again, Pull pays off: Environment, reputation and cash increase!");
             eventPositiveSound.play();
             updateStats();
           }
@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', -5);
             adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("Push again: costs rise, no R&D funds. -Rep, -Env, -£10k");
+            logEvent("Push again: costs rise, no R&D funds. Environmental and cash decrease.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -276,7 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', 5);
             adjustStat('cash', 10000); // +£10,000
             adjustStat('week', 1);
-            logEvent("Pull again: less waste, more profit. +Rep, +Env, +£10k");
+            logEvent("Pull again: less waste, more profit. Environment, reputation and cash increase!");
             eventPositiveSound.play();
             updateStats();
           }
@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', -5);
             adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("Push: Excess stock. -Rep, -Env, -£10k");
+            logEvent("Push: Excess stock. Environmental and cash decrease.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -299,14 +299,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // 4. R&D Investment Opportunity
     {
       title: "R&D Investment",
-      description: "Invest £10,000 in R&D? Do this 3 times total for a breakthrough.",
+      description: "Invest £10,000 in R&D? Will it lead to a breakthrough?",
       choices: [
         {
           text: "Yes",
           onSelect: () => {
             adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("You invest in R&D: -£10k now for future gains.");
+            logEvent("You invest in R&D: -£10k now for possible future gains.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "No",
           onSelect: () => {
             adjustStat('week', 1);
-            logEvent("You skip R&D investment, saving cash now but risking stagnation.");
+            logEvent("You skip R&D investment, saving cash now but risking stagnation in a quickly evolving sector.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -334,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', 3);
             adjustStat('cash', -5000); // -£5,000
             adjustStat('week', 1);
-            logEvent("Reliable supplier: stable deliveries, -£5k, +Rep");
+            logEvent("Reliable supplier: stable deliveries customers get product on time as result of this. Reputation increases with a slight cash decrease");
             eventPositiveSound.play();
             updateStats();
           }
@@ -345,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', -5);
             adjustStat('cash', 5000); // +£5,000
             adjustStat('week', 1);
-            logEvent("Unreliable supplier: cheaper now (+£5k), future risk.");
+            logEvent("Unreliable supplier: cheaper now (+£5k), repuatation decrease as some stock comes late meaning less custoemr satisfaction. Risk of a future supply chain mishap...");
             eventNegativeSound.play();
             updateStats();
           }
