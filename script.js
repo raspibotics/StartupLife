@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', 5);
             adjustStat('cash', 10000); // +£10,000
             adjustStat('week', 1);
-            logEvent("You have chosen Pull. This is a good choice for EV. You only make a finsihed car when one is bought, thus you waste less material and money. Customers also get a more personal car. Environment, reputation and cash increase!");
+            logEvent("You have chosen Pull. This is a good choice for EV. You only make a finished car when one is bought, thus you waste less material and money. Customers also get a more personal car. Environment, reputation and cash increase!");
             eventPositiveSound.play();
             updateStats();
           }
@@ -226,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', -5);
             adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("You chosen Push. You start to produce lots of finished cars, having to pay for lots of storage space, some finished cars don't sell and then become outdated in the quickly evolving sector. Environmental and cash decrease.");
+            logEvent("You chose Push. You start to produce lots of finished cars, having to pay for lots of storage space, some finished cars don't sell and then become outdated in the quickly evolving sector. Environmental and cash decrease.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. Push vs Pull Manufacturing (2nd occurrence)
     {
       title: "Revisiting Manufacturing Supply Model Strategy",
-      description: "Remembering EV production is a stable product and can be well forecasated. Pull or Push? Stick with your orginal or switch it up?",
+      description: "Remembering EV production is a stable product and can be well forecasted. Pull or Push? Stick with your orginal or switch it up?",
       choices: [
         {
           text: "Pull Model",
@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', -5);
             adjustStat('cash', 5000); // +£5,000
             adjustStat('week', 1);
-            logEvent("Unreliable supplier: cheaper now (+£5k), repuatation decrease as some stock comes late meaning less custoemr satisfaction. Risk of a future supply chain mishap...");
+            logEvent("Unreliable supplier: cheaper now (+£5k), repuatation decrease as some stock comes late meaning less customer satisfaction. Risk of a future supply chain mishap...");
             eventNegativeSound.play();
             updateStats();
           }
@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', 10);
             adjustStat('cash', -10000); // -£10,000
             adjustStat('week', 1);
-            logEvent("Recycle: You properly recycle the big lithium-ion batteries which decreases cash as it is expensive to do. However you as a company are making the correct enriovnmental choice.");
+            logEvent("Recycle: You properly recycle the big lithium-ion batteries which decreases cash as it is expensive to do. However you as a company are making the correct environmental choice.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -346,9 +346,9 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -10);
             adjustStat('environmental', -10);
-            adjustStat('cash', -20000); // -£20,000
+            adjustStat('cash', -40000); // -£20,000
             adjustStat('week', 1);
-            logEvent("Fly-tip: You significantly damage the environment and HSE offciers find out and fine you heavily and you make the news for being a shady company. Decrease everything.");
+            logEvent("Fly-tip: You significantly damage the environment and HSE officers find out and fine you heavily and you make the news for being a shady company. Decrease everything.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -377,8 +377,8 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Cheap Panels",
           onSelect: () => {
             adjustStat('reputation', -5);
-            adjustStat('environmental', -5);
-            adjustStat('cash', -10000); // -£10,000 fee
+            adjustStat('environmental', -8);
+            adjustStat('cash', -20000); // -£10,000 fee
             adjustStat('week', 1);
             logEvent("Cheap panels: Reputation and environental score decreases. Have to pay added tax and fees shipping the doors in as the company are not susatinable.");
             eventNegativeSound.play();
@@ -428,9 +428,9 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Yes",
           onSelect: () => {
             adjustStat('reputation', 5);
-            adjustStat('cash', -5000); // -£5,000 to invest in relationship
+            adjustStat('cash', -10000); // -£5,000 to invest in relationship
             adjustStat('week', 1);
-            logEvent("Continuous supply means a predictable demand which makes both yours and suppleirs job easier. You can now forecast costs better on your expenditure model. Increased reputaion but costs slightly more.");
+            logEvent("Continuous supply means a predictable demand which makes both yours and suppliers job easier. You can now forecast costs better on your expenditure model. Increased reputaion but costs slightly more.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -637,9 +637,10 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Reinvest",
           onSelect: () => {
             adjustStat('reputation', 5);
-            adjustStat('cash', 5000); // Reinvestment puts £5k in
+            adjustStat('cash', 15000); // Reinvestment puts £5k in
             adjustStat('week', 1);
-            logEvent("Reinvestment for future growth, increase reputation and cash");
+            adjustStat('workers', 2);
+            logEvent("Reinvestment for future growth, increase reputation and cash, hire new workers");
             eventPositiveSound.play();
             updateStats();
           }
@@ -676,7 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           text: "No Party",
           onSelect: () => {
-            adjustStat('reputation', -2);
+            adjustStat('reputation', -4);
             adjustStat('week', 1);
             logEvent("No party means saved cash, but rep decreases and you miss out on an oppurtunity to meet important contacts.");
             eventNegativeSound.play();
