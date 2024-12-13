@@ -430,7 +430,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('reputation', 5);
             adjustStat('cash', -5000); // -£5,000 to invest in relationship
             adjustStat('week', 1);
-            logEvent("Continuous supply means a predictable demand which makes both yours and suppleirs job easier. You can now forecast costs better on your expenditure model. Increased reputaion but costs slightly more.");
+            logEvent("Continuous supply means a predictable demand which makes both yours and suppliers job easier. You can now forecast costs better on your expenditure model. Increased reputaion but costs slightly more.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -649,7 +649,7 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -3);
             adjustStat('week', 1);
-            logEvent("You went on holiday and perhaps oppurtunity for overall growth, decrease reputation.");
+            logEvent("You went on holiday and perhaps missed an oppurtunity for overall growth, decrease reputation.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -725,7 +725,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('environmental', 2);
             adjustStat('week', 1);
             adjustStat('workers', 1);
-            logEvent("Free updates means the cars are always as efficient as possible and you build a strong customer relationship meaning they are more likely to support your compnay over other less personal companies. Need to hire an extra worker.");
+            logEvent("Free updates means the cars are always as efficient as possible and you build a strong customer relationship meaning they are more likely to support your company over other less personal companies. Need to hire an extra worker.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -756,7 +756,7 @@ document.addEventListener("DOMContentLoaded", () => {
             adjustStat('cash', -10000); // -£10,000 investment
             adjustStat('week', 1);
             adjustStat('workers', 1);
-            logEvent("You breakthrough and create a more efficient vehicle, as you have built a good cusotmer rapport sales don't decrease due to increased product price.");
+            logEvent("You breakthrough and create a more efficient vehicle, as you have built a good customer rapport sales don't decrease due to increased product price.");
             eventPositiveSound.play();
             updateStats();
           }
@@ -765,7 +765,7 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "No",
           onSelect: () => {
             adjustStat('week', 1);
-            logEvent("No extra R&D results in a stable car price but no real compnay growth.");
+            logEvent("No extra R&D results in a stable car price but no real company growth.");
             eventNegativeSound.play();
             updateStats();
           }
@@ -823,7 +823,7 @@ document.addEventListener("DOMContentLoaded", () => {
           onSelect: () => {
             adjustStat('reputation', -5);
             adjustStat('cash', 5000); // +£5,000 saved from downsizing
-            adjustStat('workers', -4);
+            adjustStat('workers', -3);
             adjustStat('week', 1);
             logEvent("Downsizing: +£5k short-term, -Rep, fewer workers.");
             eventNegativeSound.play();
